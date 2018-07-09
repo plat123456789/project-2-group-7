@@ -11,6 +11,10 @@ const user = [
         id: 1,
         email: "peter@peter.com",
         password: "peter"
+    },{
+        id: 2,
+        email: "sam@sam.com",
+        password: "Sam"
     }
 ];
 
