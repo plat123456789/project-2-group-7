@@ -1,0 +1,23 @@
+{
+  "name": "project-2-group-7",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plat123456789/project-2-group-7.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plat123456789/project-2-group-7/issues"
+  },
+  "homepage": "https://github.com/plat123456789/project-2-group-7#readme",
+  "description": "",
+  "dependencies": {
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
