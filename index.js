@@ -6,14 +6,14 @@ const hb = require('express-handlebars');
 const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const expressSession = require('express-session')
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static("public"));
 
-app.engine('handlebars', hb({
-    defaultLayout: 'main'
-}));
+app.engine('handlebars', hb({defaultLayout: 'main'}));
 
 app.set('view engine', 'handlebars');
 
@@ -28,7 +28,11 @@ const knex = require('knex')({
     }
 });
 
-/*app.use(passport.initialize());
+/*
+app.use(expressSession());
+*/
+
+app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use('local-login', new LocalStrategy(
@@ -39,7 +43,7 @@ passport.use('local-login', new LocalStrategy(
                 return done(null, false, {message: 'Incorrect credentials.'});
             }
             let user = users[0];
-            if (user.password === pw) {
+            if (user.pw === password) {
                 return done(null, user);
             } else {
                 return done(null, false, {message: 'Incorrect credentials.'});
@@ -51,26 +55,27 @@ passport.use('local-login', new LocalStrategy(
 ));
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.user_id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (user_id, done) => {
     let users = await knex('User').where({
-        id: id
+        user_id: user_id
     });
     if (users.length == 0) {
-        return done(new Error(`Wrong user id ${id}`));
+        return done(new Error(`Wrong user id ${user_id}`));
     }
     let user = users[0];
     return done(null, user);
-});*/
+});
 
 app.get('/login', function (req, res) {
     res.render('login');
 });
 
-app.post('/login', function (req, res) {
-    console.log(req)
-});
+app.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/',
+    failureRedirect: '/error'
+}));
 
 app.listen(3000);
