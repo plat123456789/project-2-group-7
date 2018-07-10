@@ -4,6 +4,7 @@ const app = express();
 const morgan = require('morgan')
 
 app.use(morgan('tiny'));
+app.use(bodyParser.urlencoded({extended: false}))
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -30,6 +31,6 @@ passport.use('local-login', new LocalStrategy(
     }
 ));
 
-app.use(bodyParser.urlencoded({extended: false}))
+
 
 app.listen(3000)
