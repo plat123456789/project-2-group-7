@@ -6,7 +6,8 @@ const hb = require('express-handlebars');
 const logger = require('morgan');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const expressSession = require('express-session')
+const expressSession = require('express-session');
+
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -28,9 +29,9 @@ const knex = require('knex')({
     }
 });
 
-/*
-app.use(expressSession());
-*/
+
+//app.use(expressSession());
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -77,5 +78,12 @@ app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/',
     failureRedirect: '/error'
 }));
+
+app.post('/sign-up', function (req,res){
+    console.log(req.body);
+    knex("User").insert({name: req.body.name,    
+                         pw: req.body.password,
+                         email: req.body.email})
+})
 
 app.listen(3000);
