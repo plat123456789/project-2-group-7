@@ -10,11 +10,15 @@ const expressSession = require('express-session');
 
 
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 app.use(express.static("public"));
 
-app.engine('handlebars', hb({defaultLayout: 'main'}));
+app.engine('handlebars', hb({
+    defaultLayout: 'main'
+}));
 
 app.set('view engine', 'handlebars');
 
@@ -39,15 +43,21 @@ app.use(passport.session());
 passport.use('local-login', new LocalStrategy(
     async (email, password, done) => {
         try {
-            let users = await knex('User').where({email: email});
+            let users = await knex('User').where({
+                email: email
+            });
             if (users.length == 0) {
-                return done(null, false, {message: 'Incorrect credentials.'});
+                return done(null, false, {
+                    message: 'Incorrect credentials.'
+                });
             }
             let user = users[0];
             if (user.pw === password) {
                 return done(null, user);
             } else {
-                return done(null, false, {message: 'Incorrect credentials.'});
+                return done(null, false, {
+                    message: 'Incorrect credentials.'
+                });
             }
         } catch (err) {
             return done(err);
@@ -79,11 +89,18 @@ app.post('/login', passport.authenticate('local-login', {
     failureRedirect: '/error'
 }));
 
-app.post('/sign-up', function (req,res){
+
+
+app.post('/sign-up', function (req, res) {
     console.log(req.body);
-    knex("User").insert({name: req.body.name,    
-                         pw: req.body.password,
-                         email: req.body.email})
+
+    knex("User").insert({
+        name: req.body.name,
+        pw: req.body.password,
+        email: req.body.email,
+    })
+    .then(res.redirect('/'));
 })
+
 
 app.listen(3000);
