@@ -17,6 +17,7 @@
   "homepage": "https://github.com/plat123456789/project-2-group-7#readme",
   "description": "",
   "dependencies": {
+    "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
   }

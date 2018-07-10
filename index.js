@@ -1,22 +1,9 @@
-const express = require('expres')
+const express = require('express')
 const bodyParser = require('body-parser')
 const app = express();
+const morgan = require('morgan')
 
-const user = [
-    {
-        id: 0,
-        email: "tom@tom.com",
-        password: "tom"
-    },{
-        id: 1,
-        email: "peter@peter.com",
-        password: "peter"
-    },{
-        id: 2,
-        email: "sam@sam.com",
-        password: "Sam"
-    }
-];
+app.use(morgan('tiny'));
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
