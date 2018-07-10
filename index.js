@@ -1,13 +1,17 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express();
+const hb = require('express-handlebars');
 const morgan = require('morgan')
-
-app.use(morgan('tiny'));
-app.use(bodyParser.urlencoded({extended: false}))
-
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+
+app.engine('handlebars', hb({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
+app.use(morgan('tiny'));
+
+app.use(bodyParser.urlencoded({extended: false}))
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,6 +34,10 @@ passport.use('local-login', new LocalStrategy(
         }
     }
 ));
+
+app.get('/login', function(req, res){
+    res.render('login');
+});
 
 
 
