@@ -28,7 +28,7 @@ const knex = require('knex')({
     }
 });
 
-app.use(passport.initialize());
+/*app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use('local-login', new LocalStrategy(
@@ -63,7 +63,7 @@ passport.deserializeUser(async (id, done) => {
     }
     let user = users[0];
     return done(null, user);
-});
+});*/
 
 app.get('/login', function (req, res) {
     res.render('login');
