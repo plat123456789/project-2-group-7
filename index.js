@@ -1,4 +1,3 @@
-const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -33,12 +32,18 @@ const knex = require('knex')({
     }
 });
 
-
-//app.use(expressSession());
+app.use(expressSession({secret: 'itsverysecret'}));
 
 
 app.use(passport.initialize());
+
 app.use(passport.session());
+
+//error handle
+app.use(function(err,req,res,next){
+    //Log the exception
+    res.status(500).send("Something failded."+ err);
+});
 
 passport.use('local-login', new LocalStrategy(
     async (email, password, done) => {
@@ -92,7 +97,6 @@ app.post('/login', passport.authenticate('local-login', {
 
 
 app.post('/sign-up', function (req, res) {
-    console.log(req.body);
 
     knex("User").insert({
         name: req.body.name,
