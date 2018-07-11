@@ -17,6 +17,8 @@
   "homepage": "https://github.com/plat123456789/project-2-group-7#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "knex": "^0.15.0",
