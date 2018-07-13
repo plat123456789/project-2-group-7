@@ -80,6 +80,13 @@ app.use(function (err, req, res, next) {
     res.status(500).send("Something failded." + err);
 });
 
+
+
+
+app.get('/', function(req, res) {
+    res.render('index');
+});
+
 app.get('/login', function (req, res) {
     res.render('login');
 });

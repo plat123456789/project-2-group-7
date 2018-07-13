@@ -4,5 +4,5 @@ module.exports.isLoggedIn =
             return next();
         }
 
-        res.redirect('/auth/facebook');
+        res.redirect('/login');
     } 
