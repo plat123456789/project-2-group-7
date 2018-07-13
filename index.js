@@ -7,6 +7,10 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const knexFile = require('./knexfile')[NODE_ENV]
+const knex = require('knex')(knexFile)
+
 
 
 app.use(bodyParser.urlencoded({
@@ -23,15 +27,6 @@ app.set('view engine', 'handlebars');
 
 app.use(logger('tiny'));
 
-const knex = require('knex')({
-    client: 'postgresql',
-    connection: {
-        database: "project-2-group-7",
-        user: "max",
-        password: "5361"
-    }
-});
-
 app.use(expressSession({secret: 'itsverysecret'}));
 
 
@@ -39,16 +34,11 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-//error handle
-app.use(function(err,req,res,next){
-    //Log the exception
-    res.status(500).send("Something failded."+ err);
-});
 
 passport.use('local-login', new LocalStrategy(
     async (email, password, done) => {
         try {
-            let users = await knex('User').where({
+            let users = await knex('user').where({
                 email: email
             });
             if (users.length == 0) {
@@ -71,18 +61,23 @@ passport.use('local-login', new LocalStrategy(
 ));
 
 passport.serializeUser((user, done) => {
-    done(null, user.user_id);
+    done(null, user.id);
 });
 
-passport.deserializeUser(async (user_id, done) => {
-    let users = await knex('User').where({
-        user_id: user_id
+passport.deserializeUser(async (id, done) => {
+    let users = await knex('user').where({
+        id:id
     });
     if (users.length == 0) {
-        return done(new Error(`Wrong user id ${user_id}`));
+        return done(new Error(`Wrong user id ${id}`));
     }
     let user = users[0];
     return done(null, user);
+});
+
+//error handle
+app.use(function (err, req, res, next) {
+    res.status(500).send("Something failded." + err);
 });
 
 app.get('/login', function (req, res) {
@@ -91,20 +86,30 @@ app.get('/login', function (req, res) {
 
 app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/',
-    failureRedirect: '/error'
+    failureRedirect: '/login'
 }));
 
+app.post('/signup', function (req, res) {
 
+    let select = knex('user').column(["email"]).where('email', req.body.email);
 
-app.post('/sign-up', function (req, res) {
-
-    knex("User").insert({
-        name: req.body.name,
-        pw: req.body.password,
-        email: req.body.email,
-    })
-    .then(res.redirect('/'));
+    select.then((result) => {
+        if (result == 0) {
+            knex("user").insert({
+                name: req.body.name,
+                pw: req.body.password,
+                email: req.body.email,
+            }).then(res.redirect('/'))
+        } else {
+            res.redirect('/login/signup-error')
+        }
+    }).catch((error) => {
+        console.log(error);
+    });
 })
 
+app.get('/login/signup-error', function (req, res) {
+    res.render('registered-email');
+})
 
 app.listen(3000);
