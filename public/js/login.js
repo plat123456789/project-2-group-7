@@ -5,4 +5,11 @@ $(document).ready(function () {
             opacity: "toggle"
         }, "slow");
     });
+    $('#signin').click(function () {
+        $(".form h6").html("Login");
+    });
+    $('#create').click(function () {
+        $(".form h6").html("Signup")
+    });
 });
+

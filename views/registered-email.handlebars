@@ -1,15 +1,19 @@
+{{>login-nav-bar}}
+
+
 <link rel="stylesheet" href="/css/login-error.css">
 
 <div class="login-page">
   <div class="form">
+    <h6>Signup</h6>
     <form class="register-form" action="/signup" method="post">
       <input type="text" placeholder="name" name="name"/>
       <input type="password" placeholder="password" name="password"/>
-      <input type="text" placeholder="email address" name="email"/>
+      <input type="text" placeholder="email address" name="username"/>
       <p>The Email Address You Have Entered Is Already Registered</p>
       <button type="submit">create</button>
       <p class="message">Already registered?
-        <a href="#">Sign In</a>
+        <a href="#" id="signin">Sign In</a>
       </p>
     </form>
     <form class="login-form" action="/login" method="post">
@@ -17,7 +21,7 @@
       <input type="password" placeholder="password" name="password"/>
       <button type="submit">login</button>
       <p class="message">Not registered?
-        <a href="#">Create an account</a>
+        <a href="#" id="create">Create an account</a>
       </p>
     </form>
   </div>

@@ -2,13 +2,13 @@
 
 {{>navigation-bar}}
 
-<div class="login-page">
+<div class="settings-page">
   <div class="form">
     <h6>Account Settings</h6>
-    <form class="register-form" action="/signup" method="post">
-      <input type="text" placeholder="name" name="name"/>
-      <input type="password" placeholder="password" name="password"/>
-      <input type="text" placeholder="email address" name="email"/>
+    <form class="settings-form" action="/settings" method="post">
+      <input type="text" placeholder="new name" name="name"/>
+      <input type="password" placeholder="new password" name="password"/>
+      <input type="text" placeholder="new email address" name="email"/>
       <button type="submit">Submit</button>
     </form>
   </div>
