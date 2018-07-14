@@ -119,4 +119,8 @@ app.get('/login/signup-error', function (req, res) {
     res.render('registered-email');
 })
 
+app.get('/settings',function(req,res){
+    res.render('settings')
+})
+
 app.listen(3000);
