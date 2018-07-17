@@ -23,7 +23,6 @@ const logout = require('./routes/logout-routes');
 
 const port = process.env.PORT || 3000;
 
-
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -104,6 +103,16 @@ app.get('/', isLoggedIn, function (req, res) {
     res.render('index');
 });
 
-app.listen(port,function(){
-    console.log("listening on "+ port);
+
+app.get('/date', function (req, res) {
+    res.render('date');
+});
+
+app.post('/date', function (req, res) {
+    console.log(req.body)
+})
+
+
+app.listen(port, function () {
+    console.log("listening on " + port);
 });
