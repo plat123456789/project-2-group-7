@@ -80,6 +80,7 @@ app.get('/placeDate', function (req, res) {
 
 
 //testing placeServices
+
 // let a = new placeService(knex);
 
 // let result;
@@ -87,6 +88,14 @@ app.get('/placeDate', function (req, res) {
 // a.list12RandomPlace()
 // .then((data)=>{result = data})
 // .catch((err)=>{console.log(err)})
+
+const DateTimeRouter = require('./routes/DateTimeRouter');
+
+const DateTimeService = require('./services/DateTimeService');
+
+let dt = new DateTimeService(knex);
+
+app.use('/api/dateTime', new DateTimeRouter(dt).router());
 
 
 app.listen(port, function () {
