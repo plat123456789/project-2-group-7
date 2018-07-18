@@ -49,13 +49,13 @@ module.exports = (app, knex) => {
                 }
                 // otherwise create user
                 else { 
-                    let hash = await bcrypt.hashPassword(password)
+                    let hash = await bcrypt.hashPassword(password).catch(err=> {console.log(err)})
                     const newUser = {
                         name: req.body.name,
                         email: email,
                         pw: hash
                     };
-                    let userId = await knex('user').insert(newUser).returning('id');
+                    let userId = await knex('user').insert(newUser).returning("id").catch(err=> {console.log(err)});
                     newUser.id = userId;
 
                     console.log('User signup successful')
@@ -63,6 +63,7 @@ module.exports = (app, knex) => {
                 }
 
             } catch(err) {
+                console.log(err);
                 done(err);
             }
     
@@ -75,7 +76,7 @@ module.exports = (app, knex) => {
 
     passport.deserializeUser(async (id, done) => {
         let users = await knex('user').where({
-            id: id
+            id: Number(id)
         });
         if (users.length == 0) {
             return done(new Error(`Wrong user id ${id}`));

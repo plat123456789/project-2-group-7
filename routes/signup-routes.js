@@ -8,8 +8,8 @@ const knex = require('knex')(knexFile);
 
 
 router.post('/', passport.authenticate('local-signup', {
-    successRedirect: '/login',
-    failureRedirect: '/signup-error'
+    successRedirect: '/',
+    failureRedirect: '/signup-error' // should disable create btn
 }));
 
 router.get('/signup-error', function (req, res) {
