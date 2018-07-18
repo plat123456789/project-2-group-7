@@ -3,6 +3,16 @@
 Run this command:
 
 ```
-npm install
+create .env file with following parameters:
 
-knex migrate:latest
+DB_NAME=
+TEST_DB_NAME=
+DB_USERNAME=
+DB_PASSWORD=
+NODE_ENV=development
+PORT=8080
+
+
+Install NPM Packages
+
+npm install
