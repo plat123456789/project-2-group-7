@@ -4,6 +4,7 @@ const app = express();
 const hb = require('express-handlebars');
 const logger = require('morgan');
 const passport = require('passport');
+const passportSetup = require('./passport.js');
 const LocalStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 
@@ -44,57 +45,12 @@ app.use(expressSession({
     secret: 'itsverysecret'
 }));
 
-app.use(passport.initialize());
-
-app.use(passport.session());
-
-
-//passport local login strategy
-passport.use('local-login', new LocalStrategy(
-    async (email, password, done) => {
-        try {
-            let users = await knex('user').where({
-                email: email
-            });
-            if (users.length == 0) {
-                return done(null, false, {
-                    message: 'Incorrect credentials.'
-                });
-            }
-            let user = users[0];
-            if (user.pw === password) {
-                return done(null, user);
-            } else {
-                return done(null, false, {
-                    message: 'Incorrect credentials.'
-                });
-            }
-        } catch (err) {
-            return done(err);
-        }
-    }
-));
-
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-    let users = await knex('user').where({
-        id: id
-    });
-    if (users.length == 0) {
-        return done(new Error(`Wrong user id ${id}`));
-    }
-    let user = users[0];
-    return done(null, user);
-});
+passportSetup(app, knex);
 
 //error handle
 app.use(function (err, req, res, next) {
     res.status(500).send("Something failded." + err);
 });
-
 
 //login routes inside the router file
 app.use('/login', login);
