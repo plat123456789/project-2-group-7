@@ -2,10 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const hb = require('express-handlebars');
-const logger = require('morgan');
-const passport = require('passport');
+const logger = require('morgan');;
 const passportSetup = require('./passport.js');
-const LocalStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session');
 
 //db
@@ -22,7 +20,7 @@ const signup = require('./routes/signup-routes');
 const settings = require('./routes/settings-routes');
 const logout = require('./routes/logout-routes');
 
-const placeService = require('./services/placeService')
+//onst placeService = require('./services/placeService')
 
 
 const port = process.env.PORT || 3000;
@@ -80,13 +78,15 @@ app.get('/placeDate', function (req, res) {
 });
 
 
-let a = new placeService(knex);
 
-let result;
+//testing placeServices
+// let a = new placeService(knex);
 
-a.list12RandomPlace()
-.then((data)=>{result = data})
-.catch((err)=>{console.log(err)})
+// let result;
+
+// a.list12RandomPlace()
+// .then((data)=>{result = data})
+// .catch((err)=>{console.log(err)})
 
 
 app.listen(port, function () {
