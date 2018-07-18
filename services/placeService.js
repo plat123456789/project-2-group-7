@@ -44,6 +44,11 @@ class placeService {
         })
 
     }
+
+    list12RandomPlace(){
+        return this.knex("place").select("*").where("id",">",(Math.floor(Math.random()*(10000-1)+1))).limit(12);
+    }
+
 }
 
 module.exports = placeService;

@@ -21,6 +21,9 @@ const signup = require('./routes/signup-routes');
 const settings = require('./routes/settings-routes');
 const logout = require('./routes/logout-routes');
 
+const placeService = require('./services/placeService')
+
+
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({
@@ -111,6 +114,23 @@ app.get('/date', function (req, res) {
 app.post('/date', function (req, res) {
     console.log(req.body)
 })
+
+app.get('/place', function (req, res) {
+    res.render('place');
+});
+
+app.get('/placeDate', function (req, res) {
+    res.send(result);
+});
+
+
+let a = new placeService(knex);
+
+let result;
+
+a.list12RandomPlace()
+.then((data)=>{result = data})
+.catch((err)=>{console.log(err)})
 
 
 app.listen(port, function () {
