@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const bcrypt = require('../bcrypt.js');
 const isLoggedIn = require('../utils/guard').isLoggedIn;
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -18,22 +18,30 @@ router.post('/', isLoggedIn, function (req, res) {
         knex('user').where('id', req.user.id).update('name', req.body.name)
             .then(() => {
                 res.redirect('/');
-                console.log('update success')
+                console.log('update name')
             })
             .catch((err) => {
                 console.log(err)
             })
     }
+
     if (req.body.password) {
-        knex('user').where('id', req.user.id).update('pw', req.body.password)
+        return new Promise((resolve, reject) => {
+            bcrypt.hashPassword(req.body.password)
+            .then((hash) => {
+                resolve(knex('user').where('id', req.user.id).update('pw', hash))
+             })
             .then(() => {
                 res.redirect('/');
-                console.log('update success')
+                console.log('update password')
             })
             .catch((err) => {
                 console.log(err);
+                reject(err)
             })
+        })
     }
+
     if (req.body.email) {
 
         let select = knex('user').column(["email"]).where('email', req.body.email);
@@ -43,7 +51,7 @@ router.post('/', isLoggedIn, function (req, res) {
                 knex('user').where('id', req.user.id).update('email', req.body.email)
                     .then(() => {
                         res.redirect('/');
-                        console.log('update success')
+                        console.log('update email')
                     })
                     .catch((error) => {
                         console.log(error);
