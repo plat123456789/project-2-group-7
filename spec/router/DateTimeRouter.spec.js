@@ -2,65 +2,56 @@ const DateTimeRouter = require('../../routes/DateTimeRouter');
 
 describe('DateTimeRouter ',()=>{
     let dateTimeRouter;
-    let groupService;
+    let dateTimeService;
     let req;
     let res;
-    let groups = [
+    let resultDatetimes =
         {
-            id:1,
-            name:"group1",
-            created_at:  new Date(),
-            updated_at: new Date()
-        },
-        {
-            id:2,
-            name:"group2",
-            created_at:  new Date(),
-            updated_at: new Date()
+            date0: "Sep 20 2018 12:00",
+            date1: "Feb 27 2019 01:55"
         }
-    ]
 
     beforeEach(()=>{
-        groupService = jasmine.createSpyObj("groupService",{
-                list : Promise.resolve(groups),
-                create: Promise.resolve([1]),
-                update: Promise.resolve([1]),
-                delete: Promise.resolve([1])
+        dateTimeService = jasmine.createSpyObj("dateTimeService",{
+            listDateTime: Promise.resolve(resultDatetimes),
+            addDateTime: Promise.resolve([1]),
+            updateDateTime: Promise.resolve([1]),
+            removeDateTime: Promise.resolve([1])
         });
-        groupRouter = new GroupRouter(groupService);
-        groupRouter.router();
+        dateTimeRouter = new DateTimeRouter(dateTimeService);
+        dateTimeRouter.router();
         req = jasmine.createSpyObj('req',['params','query','body']);
         res = jasmine.createSpyObj('res',['json']); 
         
     });
 
     it(" should run router method successfully",()=>{
-        groupRouter.router();
+        dateTimeRouter.router();
     });
 
     it(" should support get method",(done)=>{
-        groupRouter.get(req,res).then(()=>{
-            expect(res.json).toHaveBeenCalledWith(groups);
+        dateTimeRouter.get(req,res).then(()=>{
+            expect(res.json).toHaveBeenCalledWith(resultDatetimes);
             done();
         })
     });
 
     it(" should support post method",(done)=>{
-        groupRouter.post(req,res).then(()=>{
+        dateTimeRouter.post(req,res).then(()=>{
             expect(res.json).toHaveBeenCalledWith([1])
             done();
         });
     });
 
     it(" should support put method",(done)=>{
-        groupRouter.put(req,res).then(()=>{
+        dateTimeRouter.put(req,res).then(()=>{
             expect(res.json).toHaveBeenCalledWith([1])
             done();
         });
     });
 
     it(" should support delete method",(done)=>{
-        groupRouter.delete(req,res).then(()=>{
+        dateTimeRouter.delete(req,res).then(()=>{
             expect(res.json).toHaveBeenCalledWith([1])
             done();
         });

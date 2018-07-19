@@ -59,7 +59,7 @@ describe("dateTimeService ",()=>{
         })
     });
 
-    //event_id later
+    //TODO: event_id
 
     // it("should support search method",(done)=>{
     //     dt.addDateTime(dateString)
