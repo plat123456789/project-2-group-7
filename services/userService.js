@@ -52,7 +52,11 @@ class userService {
             .where('id', userId)
             .del();
     }
-    
+
+    //for testing purpose
+    listUserTable(){
+        return this.knex('user').select('id','name', 'email', 'pw');
+    } 
 }
 
 module.exports = userService;
