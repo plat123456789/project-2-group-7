@@ -13,54 +13,47 @@ router.get('/', isLoggedIn, function (req, res) {
 })
 
 router.post('/', isLoggedIn, function (req, res) {
+    
+     let updatePromises = [];
 
     if (req.body.name) {
-        knex('user').where('id', req.user.id).update('name', req.body.name)
-            .then(() => {
-                res.redirect('/');
-                console.log('update name')
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        let updateName = knex('user').where('id', req.user.id).update('name', req.body.name);
+        updatePromises.push(updateName)
     }
-
+        
     if (req.body.password) {
-        return new Promise((resolve, reject) => {
-            bcrypt.hashPassword(req.body.password)
-            .then((hash) => {
-                resolve(knex('user').where('id', req.user.id).update('pw', hash))
-             })
-            .then(() => {
-                res.redirect('/');
-                console.log('update password')
-            })
-            .catch((err) => {
-                console.log(err);
-                reject(err)
-            })
+        let updatePw = bcrypt.hashPassword(req.body.password)
+        .then((hash) => {
+            return knex('user').where('id', req.user.id).update('pw', hash);
         })
+        updatePromises.push(updatePw)
     }
 
     if (req.body.email) {
-
-        let select = knex('user').column(["email"]).where('email', req.body.email);
-
-        select.then((result) => {
+        
+        let select = knex('user').column(["email"]).where('email', req.body.email)
+        .then((result) => {
             if (result == 0) {
-                knex('user').where('id', req.user.id).update('email', req.body.email)
-                    .then(() => {
-                        res.redirect('/');
-                        console.log('update email')
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                return knex('user').where('id', req.user.id).update('email', req.body.email)
             } else {
-                res.redirect('/update-error')
+                return Promise.reject();
             }
         })
+        updatePromises.push(select)
+
     }
+    console.log(updatePromises);
+
+    Promise.all(updatePromises)
+    .then(() => {
+        res.redirect('/');
+        console.log('updated user')
+    })
+    .catch((err) => {
+        res.redirect('/update-error')
+        console.log(err);
+    })
+    
 })
 
 module.exports = router;
