@@ -10,7 +10,7 @@ DB_PASSWORD=
 NODE_ENV=development
 PORT=3000
 
-
+``````
 
 
 Install NPM Packages
@@ -20,3 +20,5 @@ Run this command:
 ````
 
 npm install
+
+````
