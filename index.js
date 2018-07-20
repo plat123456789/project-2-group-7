@@ -5,7 +5,11 @@ const hb = require('express-handlebars');
 const logger = require('morgan');;
 const passportSetup = require('./passport.js');
 const expressSession = require('express-session');
-
+const flash = require('connect-flash');
+app.use(flash());
+const expressValidator = require('express-validator');
+app.use(expressValidator());
+   
 //db
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const knexFile = require('./knexfile')[NODE_ENV];
@@ -15,13 +19,17 @@ const knex = require('knex')(knexFile);
 const isLoggedIn = require('./utils/guard').isLoggedIn;
 
 //routes
-const login = require('./routes/login-routes');
-const signup = require('./routes/signup-routes');
-const settings = require('./routes/settings-routes');
-const logout = require('./routes/logout-routes');
+const loginRoute = require('./routes/login-routes');
+const signupRoute = require('./routes/signup-routes');
+const settingsRoute = require('./routes/settings-routes');
+const logoutRoute = require('./routes/logout-routes');
 
 //onst placeService = require('./services/placeService')
+const UserService = require('./services/userService');
+// const EventService = require('./services/eventService');
 
+let userService = new UserService(knex);
+// let eventService = new EventService(knex);
 
 const port = process.env.PORT || 3000;
 
@@ -51,13 +59,16 @@ app.use(function (err, req, res, next) {
 });
 
 //login routes inside the router file
-app.use('/login', login);
-app.use('/signup', signup);
-app.use('/settings', settings);
-app.use('/logout', logout);
+app.use('/login', loginRoute);
+app.use('/signup', signupRoute);
+app.use('/settings', (new settingsRoute(userService)).router());
+// app.use('/invite', (new settingsRoute(eventService)).router());
+app.use('/logout', logoutRoute);
 
 app.get('/', isLoggedIn, function (req, res) {
-    res.render('index');
+    res.render('home');
+    console.log(req.user)
+    // res.render('index', { message: req.flash('login', 'You have logged in') });
 });
 
 
@@ -77,7 +88,17 @@ app.get('/placeDate', function (req, res) {
     res.send(result);
 });
 
+app.get('/event', function (req, res) {
+    res.render('event');
+});
 
+app.get('/settings', isLoggedIn, function (req, res) {
+    res.render('settings')
+})
+
+app.get('/invite', function (req, res) {
+    res.render('invite')
+})
 
 //testing placeServices
 
