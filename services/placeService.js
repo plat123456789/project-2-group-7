@@ -47,12 +47,22 @@ class placeService {
 
     }
 
-    searchPlace(string){
-        this.searchString = "%"+string.toString()+"%";
+    searchPlace(input){
 
-        return this.knex(PLACE).where("name", "like", this.searchString)
-            //.orWhere("address", "like", this.searchString)
-            .limit(100);
+        if(typeof input==="number"){
+            this.searchInput = input;
+
+            return this.knex(PLACE).where("district_id", this.searchInput).limit(100);
+        }
+
+        this.searchInput = "%"+input.toString().trim()+"%";
+
+        return this.knex(PLACE)
+        .where("name", "like", this.searchInput)
+        .orWhere("address", "like", this.searchInput)
+        .orWhere("price_range", "like", this.searchInput)
+        .orWhere("cuisine", "like", this.searchInput)
+        .limit(100);
     }
 
 

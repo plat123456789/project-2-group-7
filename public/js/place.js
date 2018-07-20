@@ -71,7 +71,7 @@ $(document).ready(function () {
 
 	//get restaurant data
 	$.ajax({
-			url: "/placeData",
+			url: "/api/places/initialPlaceData",
 			type: "GET",
 		})
 		.done(function (data) {

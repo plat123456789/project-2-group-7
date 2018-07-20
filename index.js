@@ -24,7 +24,6 @@ const signupRoute = require('./routes/signup-routes');
 const settingsRoute = require('./routes/settings-routes');
 const logoutRoute = require('./routes/logout-routes');
 
-const placeService = require('./services/placeService')
 const UserService = require('./services/userService');
 // const EventService = require('./services/eventService');
 
@@ -100,23 +99,15 @@ app.get('/invite', function (req, res) {
     res.render('invite')
 })
 
-//testing placeServices
 
-let a = new placeService(knex);
+//place service & router referencing Node-example structure
+const  PlaceRouter = require('./routes/placeServiceRouter');
 
-let result;
+const PlaceService = require('./services/placeService');
 
-a.list27RandomPlace()
-.then((data)=>{result = data})
-.catch((err)=>{console.log(err)})
+let placeService = new PlaceService(knex);
 
-// const DateTimeRouter = require('./routes/DateTimeRouter');
-
-// const DateTimeService = require('./services/DateTimeService');
-
-// let dt = new DateTimeService(knex);
-
-// app.use('/api/dateTime', new DateTimeRouter(dt).router());
+app.use('/api/places',new PlaceRouter(placeService).router());
 
 
 app.listen(port, function () {
