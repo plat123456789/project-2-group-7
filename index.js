@@ -24,7 +24,7 @@ const signupRoute = require('./routes/signup-routes');
 const settingsRoute = require('./routes/settings-routes');
 const logoutRoute = require('./routes/logout-routes');
 
-//onst placeService = require('./services/placeService')
+const placeService = require('./services/placeService')
 const UserService = require('./services/userService');
 // const EventService = require('./services/eventService');
 
@@ -84,8 +84,8 @@ app.get('/place', function (req, res) {
     res.render('place');
 });
 
-app.get('/placeDate', function (req, res) {
-    //res.send(result);
+app.get('/placeData', function (req, res) {
+    res.send(result);
 });
 
 app.get('/event', function (req, res) {
@@ -102,13 +102,13 @@ app.get('/invite', function (req, res) {
 
 //testing placeServices
 
-// let a = new placeService(knex);
+let a = new placeService(knex);
 
-// let result;
+let result;
 
-// a.list12RandomPlace()
-// .then((data)=>{result = data})
-// .catch((err)=>{console.log(err)})
+a.list27RandomPlace()
+.then((data)=>{result = data})
+.catch((err)=>{console.log(err)})
 
 // const DateTimeRouter = require('./routes/DateTimeRouter');
 

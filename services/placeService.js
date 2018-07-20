@@ -1,3 +1,5 @@
+const PLACE = require("./tables").PLACE;
+
 class placeService {
     constructor(knex) {
         this.knex = knex;
@@ -9,7 +11,7 @@ class placeService {
     addPlace(place, event) {
         let query = this.knex
             .select('name', 'district')
-            .from('place')
+            .from(PLACE)
             .where('event.id', event);
         
         return query.then((rows) => {
@@ -37,7 +39,7 @@ class placeService {
     placeDetail(place) {
         let query = this.knex
             .select('*')
-            .from('place');
+            .from(PLACE);
 
         return query.then((rows) => {
 
@@ -45,8 +47,17 @@ class placeService {
 
     }
 
-    list12RandomPlace(){
-        return this.knex("place").select("*").where("id",">",(Math.floor(Math.random()*(10000-1)+1))).limit(12);
+    searchPlace(string){
+        this.searchString = "%"+string.toString()+"%";
+
+        return this.knex(PLACE).where("name", "like", this.searchString)
+            //.orWhere("address", "like", this.searchString)
+            .limit(100);
+    }
+
+
+    list27RandomPlace(){
+        return this.knex(PLACE).select("*").where("id",">",(Math.floor(Math.random()*(10000-1)+1))).limit(27);
     }
 
 }

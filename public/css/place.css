@@ -18,3 +18,8 @@
 #search{
     margin-top: 50px;
 }
+
+.green{
+	background-color: rgb(66, 170, 66);
+	opacity: 0.8;
+}

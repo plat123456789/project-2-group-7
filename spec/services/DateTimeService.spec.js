@@ -6,6 +6,7 @@ describe("dateTimeService ", () => {
 
     let dt;
     let dateString = 'Jul 19 2018 18:35';
+    
     beforeEach((done) => {
         dt = new DateTimeService(knex);
         knex('dateOption').del().then(() => done());
