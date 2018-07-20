@@ -25,6 +25,7 @@ const createPlace = (knex, place) => {
     image: place.img_url,
     latitude: place.latitude,
     longitude: place.longitude,
-    price_range: place.price_range    
+    price_range: place.price_range,
+    cuisine: place.cuisine,  
   });
 };

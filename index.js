@@ -85,7 +85,7 @@ app.get('/place', function (req, res) {
 });
 
 app.get('/placeDate', function (req, res) {
-    res.send(result);
+    //res.send(result);
 });
 
 app.get('/event', function (req, res) {
@@ -110,13 +110,13 @@ app.get('/invite', function (req, res) {
 // .then((data)=>{result = data})
 // .catch((err)=>{console.log(err)})
 
-const DateTimeRouter = require('./routes/DateTimeRouter');
+// const DateTimeRouter = require('./routes/DateTimeRouter');
 
-const DateTimeService = require('./services/DateTimeService');
+// const DateTimeService = require('./services/DateTimeService');
 
-let dt = new DateTimeService(knex);
+// let dt = new DateTimeService(knex);
 
-app.use('/api/dateTime', new DateTimeRouter(dt).router());
+// app.use('/api/dateTime', new DateTimeRouter(dt).router());
 
 
 app.listen(port, function () {
