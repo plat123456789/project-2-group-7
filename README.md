@@ -2,6 +2,7 @@
 
 create .env file with following parameters:
 
+``````
 DB_NAME=
 TEST_DB_NAME=
 DB_USERNAME=
