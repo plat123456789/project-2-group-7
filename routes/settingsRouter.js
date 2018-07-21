@@ -1,7 +1,7 @@
 const express = require("express");
 const isLoggedIn = require('../utils/guard').isLoggedIn;
 
-class settingsRoute{
+class settingsRouter{
     constructor(userService){
         this.userService = userService;
     }
@@ -9,6 +9,7 @@ class settingsRoute{
     router(){
         let router = express.Router();
         
+        // Update user info
         router.post('/', isLoggedIn, (req, res) => {
             this.userService.updateUser(req.user.id, req.body.name, req.body.email, req.body.password)
             .then(() => res.redirect('/'))
@@ -16,11 +17,11 @@ class settingsRoute{
             
         })
         
-        // router.get('/',(req,res)=> {
-        //     this.userService.getUserInfo(req.user.id)
-        //         .then((data) => res.json(data))
-        //         .catch((err) => res.status(500).json(err));
-        // });
+        router.get('/',(req,res)=> {
+            this.userService.getUserInfo(req.user.id)
+                .then((data) => res.json(data))
+                .catch((err) => res.status(500).json(err));
+        });
 
         router.delete('/',(req,res)=> {
             this.userService.removeUser(req.user.id)
@@ -32,5 +33,4 @@ class settingsRoute{
     }
 }
 
-module.exports = settingsRoute
-
+module.exports = settingsRouter;

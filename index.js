@@ -3,22 +3,24 @@ const bodyParser = require('body-parser');
 const app = express();
 const hb = require('express-handlebars');
 const logger = require('morgan');;
-const passportSetup = require('./passport.js');
+const passportSetup = require('./utils/strategies/local-strategy.js');
 const expressSession = require('express-session');
 // const flash = require('connect-flash');
-// app.use(flash());
 // const expressValidator = require('express-validator');
+
+// Validation
+// app.use(flash());
 // app.use(expressValidator());
-   
+
 // Database
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const knexFile = require('./knexfile')[NODE_ENV];
 const knex = require('knex')(knexFile);
 
+const port = process.env.PORT || 3000;
+
 // Check logged in
 const isLoggedIn = require('./utils/guard').isLoggedIn;
-
-const port = process.env.PORT || 3000;
 
 // Bodyparser
 app.use(bodyParser.urlencoded({
@@ -46,11 +48,9 @@ app.use(expressSession({
 passportSetup(app, knex);
 
 // Routes
-const loginRoute = require('./routes/login-routes');
-const signupRoute = require('./routes/signup-routes');
-const settingsRoute = require('./routes/settings-routes');
-const logoutRoute = require('./routes/logout-routes');
-const eventRouter = require('./routes/eventRouter');
+const ViewRouter = require('./ViewRouter');
+const SettingsRouter = require('./routes/settingsRouter');
+const EventRouter = require('./routes/eventRouter');
 const PlaceRouter = require('./routes/placeServiceRouter');
 
 // Services
@@ -62,59 +62,12 @@ let userService = new UserService(knex);
 let placeService = new PlaceService(knex);
 let eventService = new EventService(knex);
 
-//error handle
-app.use(function (err, req, res, next) {
-    res.status(500).send("Something failded." + err);
-});
-
-//login routes inside the router file
-app.use('/login', loginRoute);
-app.use('/signup', signupRoute);
-app.use('/logout', logoutRoute);
-app.use('/settings', (new settingsRoute(userService)).router());
+app.use('/',new ViewRouter().router());
+app.use('/settings', (new SettingsRouter(userService)).router());
 app.use('/api/places',new PlaceRouter(placeService).router());
-app.use('/api', isLoggedIn, (new eventRouter(eventService)).router());
-app.use('/addevent', isLoggedIn, (new eventRouter(eventService)).router());
-// app.use('/api/add-invitee', (new settingsRoute(eventService)).router());  WORKING
-
-
-// ViewRouter
-app.get('/', isLoggedIn, function (req, res) {
-    res.render('home');
-    console.log(req.user)
-    // res.render('index', { message: req.flash('login', 'You have logged in') });
-});
-
-
-app.get('/date', function (req, res) {
-    res.render('date');
-});
-
-app.post('/date', function (req, res) {
-    console.log(req.body)
-})
-
-app.get('/place', function (req, res) {
-    res.render('place');
-});
-
-app.get('/placeData', function (req, res) {
-    res.send(result);
-});
-
-app.get('/settings', isLoggedIn, function (req, res) {
-    res.render('settings')
-})
-
-// Create event
-app.get('/create-event', isLoggedIn, function (req, res) {
-    res.render('create')
-})
-
-// app.get('/invite', function (req, res) {  WORKING
-//     res.render('invite')
-// })
-
+app.use('/api', isLoggedIn, (new EventRouter(eventService)).router());
+app.use('/addevent', isLoggedIn, (new EventRouter(eventService)).router());
+// app.use('/api/add-invitee', (new EventRouter(eventService)).router()); // 
 
 
 app.listen(port, function () {

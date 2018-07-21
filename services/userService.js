@@ -2,7 +2,7 @@
 // list user info
 // remove account
 
-const bcrypt = require('../bcrypt.js');
+const bcrypt = require('../utils/bcrypt.js');
 
 class userService {
     constructor(knex) {
