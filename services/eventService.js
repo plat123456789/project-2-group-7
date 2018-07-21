@@ -1,6 +1,6 @@
-// list all events
+//X list all events
 // filter by status
-// add new event
+//X add new event
 // invite participant
 // update event info
 // confirm event
@@ -10,32 +10,55 @@ class eventService {
     constructor(knex) {
         this.knex = knex;
     }
-    // list on homepage and event page ??
-    // listEvent(event) { // req.user.id
-    //     let query = this.knex('event').select()
-    //         .innerJoin('evtuser')
-    //         .innerJoin('dateoption')
-    //         .innerJoin('placeoption')
-    //         .innerJoin('datevote')
-    //         .innerJoin('placevote')
-    //         .innerJoin('user')
-    //         .innerJoin('comment')
-    //         .where()
-    // }
+    // list on homepage 
+    listAllEvent(userId) { // req.user.id
+        let eventObj = {}
+
+        let query = this.knex.select('event.title', 'event.status')
+            .from('event')
+            .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
+            .where('EvtUser.user_id', userId)
+            .orderBy('event.created_at');
+
+        let count = this.knex.count('EvtUser.email')
+            .from('EvtUser')
+            .where('EvtUser.user_id', userId);
+
+        return query.then(rows => {
+            return rows.map(row => ({
+                    title: row.title,
+                    status: row.status
+                    // noOfinvitee: count[0],
+                    // date: row.date,
+                    // place: row.place
+                })
+            )
+        })
+    }
 
     // filterEvent(event) {
     //     let query = this.knex('event').select()
-    //         .innerJoin()
+    //         .innerJoin() ?
     //         .where('event.status', 'pending')
     // }
 
-    addEvent(title, detail) { // req.body.title, req.body, detail
+    addEvent(title, detail, userId, email) { // req.body.title, req.body.detail
         return this.knex('event').insert({
-            title: title,
-            detail: detail,
-            status: 'Pending'
+                title: title,
+                detail: detail,
+                status: 'Pending'
+            }).returning('id')
+            
+         .then((eventId) => {
+             return this.knex('EvtUser').insert({
+                    event_id: eventId[0],
+                    user_id: userId,
+                    email: email,
+                    isCreator: true
+                })
+        }).catch((err) => {
+            console.log(err)
         })
-        .returning('id')
     }
 
     updateEvent(eventId, title, detail) { // req.params.id, req.body.title, req.body, detail
@@ -62,32 +85,25 @@ class eventService {
     
     inviteUser(id, email, eventId, inviteeEmail) { // req.user.id, req.user.email, req.params.id, req.body.email
         // insert creator (only creator can invite)
-        // insert invitee email in evtuser
-        // check if already exist in user, else insert user_id to evtuser.user_id
-       this.knex('evtuser')
-            .insert({
-                user_id: id,
-                event_id: eventId,
-                email: email,
-                isCreator: true
-            });
-
-        this.knex('evtuser')
+        // insert invitee email in EvtUser
+        // check if already exist in user, else insert user_id to EvtUser.user_id
+       
+        return this.knex('EvtUser')
             .insert({
                 event_id: eventId,
                 email: inviteeEmail,
                 isCreator: false
             })            
         .then(() => {
-            this.knex('user')
+            return this.knex('user')
                 .select()
-                .innerJoin("evtuser","evtuser.email","user.email")
-                .where('user.email', 'evtuser.email');
+                .innerJoin("EvtUser","EvtUser.email","user.email")
+                .where('user.email', 'EvtUser.email');
         })
         
         return query.then((rows) => {
             if(rows.length === 1) {
-                return this.knex('evtuser').insert({
+                return this.knex('EvtUser').insert({
                     user_id: rows[0].id
                 })
             } else {
@@ -95,7 +111,16 @@ class eventService {
             }
         })
     }
-  
+
+    // list invitee
+    listUser(eventId) {
+        return this.knex('EvtUser')
+                    .select('email')
+                    .where('EvtUser.event_id', eventId)
+                    .andWhere('isCreator', false);                   
+    }
+    
+    
 }
 
 module.exports = eventService;

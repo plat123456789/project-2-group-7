@@ -5,52 +5,62 @@ const hb = require('express-handlebars');
 const logger = require('morgan');;
 const passportSetup = require('./passport.js');
 const expressSession = require('express-session');
-const flash = require('connect-flash');
-app.use(flash());
-const expressValidator = require('express-validator');
-app.use(expressValidator());
+// const flash = require('connect-flash');
+// app.use(flash());
+// const expressValidator = require('express-validator');
+// app.use(expressValidator());
    
-//db
+// Database
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const knexFile = require('./knexfile')[NODE_ENV];
 const knex = require('knex')(knexFile);
 
-//check logged in
+// Check logged in
 const isLoggedIn = require('./utils/guard').isLoggedIn;
-
-//routes
-const loginRoute = require('./routes/login-routes');
-const signupRoute = require('./routes/signup-routes');
-const settingsRoute = require('./routes/settings-routes');
-const logoutRoute = require('./routes/logout-routes');
-
-const UserService = require('./services/userService');
-// const EventService = require('./services/eventService');
-
-let userService = new UserService(knex);
-// let eventService = new EventService(knex);
 
 const port = process.env.PORT || 3000;
 
+// Bodyparser
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+// static file
 app.use(express.static("public"));
 
+// View engine
+app.set('view engine', 'handlebars');
 app.engine('handlebars', hb({
     defaultLayout: 'main'
 }));
 
-app.set('view engine', 'handlebars');
-
+// Morgan
 app.use(logger('tiny'));
 
+// Express session
 app.use(expressSession({
     secret: 'itsverysecret'
 }));
 
+// Passport
 passportSetup(app, knex);
+
+// Routes
+const loginRoute = require('./routes/login-routes');
+const signupRoute = require('./routes/signup-routes');
+const settingsRoute = require('./routes/settings-routes');
+const logoutRoute = require('./routes/logout-routes');
+const eventRouter = require('./routes/eventRouter');
+const PlaceRouter = require('./routes/placeServiceRouter');
+
+// Services
+const UserService = require('./services/userService');
+const PlaceService = require('./services/placeService');
+const EventService = require('./services/eventService');
+
+let userService = new UserService(knex);
+let placeService = new PlaceService(knex);
+let eventService = new EventService(knex);
 
 //error handle
 app.use(function (err, req, res, next) {
@@ -60,10 +70,15 @@ app.use(function (err, req, res, next) {
 //login routes inside the router file
 app.use('/login', loginRoute);
 app.use('/signup', signupRoute);
-app.use('/settings', (new settingsRoute(userService)).router());
-// app.use('/invite', (new settingsRoute(eventService)).router());
 app.use('/logout', logoutRoute);
+app.use('/settings', (new settingsRoute(userService)).router());
+app.use('/api/places',new PlaceRouter(placeService).router());
+app.use('/api', isLoggedIn, (new eventRouter(eventService)).router());
+app.use('/addevent', isLoggedIn, (new eventRouter(eventService)).router());
+// app.use('/api/add-invitee', (new settingsRoute(eventService)).router());  WORKING
 
+
+// ViewRouter
 app.get('/', isLoggedIn, function (req, res) {
     res.render('home');
     console.log(req.user)
@@ -87,27 +102,19 @@ app.get('/placeData', function (req, res) {
     res.send(result);
 });
 
-app.get('/event', function (req, res) {
-    res.render('event');
-});
-
 app.get('/settings', isLoggedIn, function (req, res) {
     res.render('settings')
 })
 
-app.get('/invite', function (req, res) {
-    res.render('invite')
+// Create event
+app.get('/create-event', isLoggedIn, function (req, res) {
+    res.render('create')
 })
 
+// app.get('/invite', function (req, res) {  WORKING
+//     res.render('invite')
+// })
 
-//place service & router referencing Node-example structure
-const  PlaceRouter = require('./routes/placeServiceRouter');
-
-const PlaceService = require('./services/placeService');
-
-let placeService = new PlaceService(knex);
-
-app.use('/api/places',new PlaceRouter(placeService).router());
 
 
 app.listen(port, function () {

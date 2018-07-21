@@ -1,0 +1,23 @@
+.myevents h5 {
+    padding: 20px 0;
+}
+
+.form-check {
+    padding-bottom: 10px;
+}
+
+.event-text ul {
+    list-style: none;
+    padding-left: 0;
+    padding-bottom: 4px;
+}
+
+.event-text li {
+    padding-bottom: 4px;
+}
+
+.event-item {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px
+}
