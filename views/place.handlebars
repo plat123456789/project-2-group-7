@@ -6,37 +6,73 @@
 <body>
 <div class="container">
 	<div class="row" id="search">
-		<form id="search-form" action="" method="POST" enctype="multipart/form-data">
 			<div class="form-group col-xs-9">
-				<input class="form-control" type="text" placeholder="Search" />
+				<input class="form-control" type="text" placeholder="Search"/>
 			</div>
 			<div class="form-group col-xs-3">
-				<button type="submit" class="btn btn-block btn-primary">Search</button>
+				<button class="btn btn-block btn-primary searchButton" disabled>Search</button>
 			</div>
-		</form>
 	</div>
 	<div class="row" id="filter">
 		<form>
 			<div class="form-group col-sm-4 col-xs-6">
 				<select data-filter="make" class="filter-make filter form-control">
 					<option value="">Select District</option>
-					<option value="">Show All</option>
-                    <option value="">New Territories</option>
-                    <option value="">kowloon</option>
-                    <option value="">Hong Kong Island</option>
+                    <option class='filter' value='3003'>New Territories</option>
+                    <option class='filter' value='Kowloon'>kowloon</option>
+                    <option class='filter' value='1022'>Hong Kong Island</option>
+					<option class='filter' value='1001'>Central and Western</option>
+					<option class='filter' value='1001'>Eastern</option>
+					<option class='filter' value='1001'>Southern</option>
+					<option class='filter' value='1001'>Wan Chai</option>
+					<option class='filter' value='1001'>Sham Shui Po</option>
+					<option class='filter' value='1001'>Kowloon City</option>
+					<option class='filter' value='1001'>Kwun Tong</option>
+					<option class='filter' value='1001'>Wong Tai Sin</option>
+					<option class='filter' value='1001'>Yau Tsim Mong</option>
+					<option class='filter' value='1001'>Islands</option>
+					<option class='filter' value='1001'>Kwai Tsing</option>
+					<option class='filter' value='1001'>North</option>
+					<option class='filter' value='1001'>Sai Kung</option>
+					<option class='filter' value='1001'>Sha Tin</option>
+					<option class='filter' value='1001'>Tai Po</option>
+					<option class='filter' value='1001'>Tsuen Wan</option>
+					<option class='filter' value='1001'>Tuen Mun</option>
+					<option class='filter' value='1001'>Yuen Long</option>
+
+
 				</select>
 			</div>
 			<div class="form-group col-sm-4 col-xs-6">
 				<select data-filter="model" class="filter-model filter form-control">
 					<option value="">Select Cusine</option>
-					<option value="">Show All</option>
                     <option value="">Hong Kong Style</option>
+					<option value="">Guangdong</option>
+					<option value="">Japanese</option>
+					<option value="">American</option>
+					<option value="">International</option>
+					<option value="">Italian</option>
+					<option value="">Western</option>
+					<option value="">Thai</option>
+					<option value="">Taiwan</option>
+					<option value="">Indian</option>
+					<option value="">Chiu Chow</option>
+					<option value="">Yunnan</option>
+					<option value="">Vietnamese</option>
+					<option value="">Indian</option>
+					<option value="">French</option>
+					<option value="">Shanghai</option>
+					<option value="">Korean</option>
+					<option value="">Mediterranean</option>
+					<option value="">Beijing</option>
+					<option value="">Sichuan</option>
+					<option value="">Jingchuanhu</option>
+
 				</select>
 			</div>
 			<div class="form-group col-sm-4 col-xs-6">
 				<select data-filter="price" class="filter-price filter form-control">
 					<option value="">Select Price Range</option>
-					<option value="">Show All</option>
                     <option value="">Below 50</option>
 				</select>
 			</div>
@@ -49,3 +85,4 @@
 <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
 <script src="/js/place.js"></script>
 </body>
+<div class="loader"></div>

@@ -15,59 +15,12 @@
 // 		"price": "$101-200",
 // 		"image": "https://static5.orstatic.com/userphoto/doorphoto/8/70F/01DV4O28C351BDA388B91Clv.jpg"
 // 	},
-// 	{
-// 		"name": "Black Cherry Coffee 黑櫻",
-// 		"cuisine": "Western",
-// 		"address": "Shop 6, G/F, Silver Mansion, 81 Shek Pai Wan Road, Aberdeen",
-// 		"price": "Below $50",
-// 		"image": "https://static8.orstatic.com/userphoto/doorphoto/N/I72/03LE937C3692F5B9310B01lv.jpg"
-// 	},
-// 	{
-// 		"name": "湘粵味餐廳",
-// 		"cuisine": "Guangdong",
-// 		"address": "Shop 5, G/F, Block A, Ka Wo Building, 14-22 Ka Wo Street, Tin Wan, Aberdeen",
-// 		"price": "$51-100",
-// 		"image": "https://static8.orstatic.com/userphoto/doorphoto/M/I2M/03KILV7C8A0343C56F1B7Flv.jpg"
-// 	},
-// 	{
-// 		"name": "Sushi Masa 鮨政",
-// 		"cuisine": "Japanese",
-// 		"address": "G/F., 142 Aberdeen Main Road, Aberdeen",
-// 		"price": "$101-200",
-// 		"image": "https://static5.orstatic.com/userphoto/doorphoto/5/43N/00T5YO03CF1B82741ECC79lv.jpg"
-// 	},
-// 	{
-// 		"name": "Take a Break 自在軒",
-// 		"cuisine": "Hong Kong Style",
-// 		"address": "5/F, Aberdeen Municipal Services Building, 203 Aberdeen Main Road, Aberdeen",
-// 		"price": "Below $50",
-// 		"image": "https://static6.orstatic.com/userphoto/doorphoto/0/N0/004JOD4EB643B6BE132552lv.jpg"
-// 	},
-// 	{
-// 		"name": "Arome Bakery 東海堂",
-// 		"cuisine": "Western",
-// 		"address": "Shop WCH2, Wong Chuk Hang MTR Station, Aberdeen",
-// 		"price": "Below $50",
-// 		"image": "https://static8.orstatic.com/userphoto/doorphoto/H/E6Q/02SVXRA0066D90940C15B6lv.jpg"
-// 	},
-// 	{
-// 		"name": "Cafe Whale",
-// 		"cuisine": "Western",
-// 		"address": "Shop 28B, G/F, ABBA Shopping Mall, 223 Aberdeen Main Road, Aberdeen",
-// 		"price": "$51-100",
-// 		"image": "https://static8.orstatic.com/userphoto/doorphoto/Q/KNC/042U0VBEC40AE78C31CF28lv.jpg"
-// 	},
-// 	{
-// 		"name": "雄記茶餐廳",
-// 		"cuisine": "Hong Kong Style",
-// 		"address": "Shop 7, G/F, Siu Kwan Mansion, 118-120 Old Main Street, Aberdeen",
-// 		"price": "Below $50",
-// 		"image": "https://static5.orstatic.com/userphoto/doorphoto/0/NK/004NOC629ACF87C0FA885Clv.jpg"
-// 	}
 // ];
 
 
 $(document).ready(function () {
+
+	$(".loader").toggle();
 
 	//get restaurant data
 	$.ajax({
@@ -76,39 +29,140 @@ $(document).ready(function () {
 		})
 		.done(function (data) {
 
-			let products = "";
+			appendDataToHtml(data);
 
-			for (let i = 0; i < data.length; i++) {
-				let name = data[i].name,
-					cuisine = data[i].cuisine,
-					address = data[i].address,
-					price = data[i].price_range,
-					image = data[i].image;
-				if (image === null) {
-					image = "../img/no-image-available.jpg"
-				}
+			$(".loader").toggle();
+		})
 
-				//create product cards
-				products += "<div class='col-sm-4 product' data-name='" + name + "' data-cuisine='" + cuisine + "' data-address='" + address + "' data-price='" + price + "'><div class='product-inner text-center'><img src='" + image + "'><br />Name: " + name + "<br />Cuisine: " + cuisine + "<br />Address: " + address + "<br />Price: " + price + "<br /><button type='button' class='btn btn-primary selection'>add</button></div></div>";
+	//disable search button
+	$('.form-control').keyup(function () {
+		if ($('.form-control').val() != '') {
+			$(".searchButton").prop('disabled', false);
+		} else {
+			$(".searchButton").prop('disabled', true);
+		}
+	})
 
-				$("#products").html(products);
+	//search bar
+	$(".searchButton").click(function () {
+
+		$(".loader").toggle();
+
+		$(".product").remove();
+
+		let string = $('.form-control').val().toString();
+
+		let searchInput = {
+			searchInput: string
+		}
+		$.ajax({
+			url: "/api/places/search",
+			type: "POST",
+			data: searchInput,
+		}).done(function (data) {
+
+			if(data.length===0){
+				let emptyResult = "<div><h5>No Results Found</h5></div>"
+
+				$("#products").html(emptyResult);
 			}
 
-			//add button action
-			$(".selection").click(function () {;
-				$(event.target).parent().toggleClass('green')
+			appendDataToHtml(data);
 
-				if ($(event.target).parent().hasClass('green')) {
-					$(event.target).text("undo");
-				} else {
-					$(event.target).text("add");
-				}
-			})
+			$(".loader").toggle();
 		})
-		//search bar
+	})
 
+	//filter
+	$(".filter").click(function () {
 
+		$(".loader").toggle();
+
+		$(".product").remove();
+
+		let input = $(".filter").val();
+
+		let searchInput = {
+			searchInput: input
+		}
+		$.ajax({
+			url: "/api/places/search",
+			type: "POST",
+			data: searchInput,
+		}).done(function (data) {
+
+			$(".loader").toggle();
+
+			appendDataToHtml(data);
+		})
+	})
+
+	//add button action
+	$(".selection").click(function () {;
+		$(event.target).parent().toggleClass('green')
+
+		if ($(event.target).parent().hasClass('green')) {
+			$(event.target).text("undo");
+		} else {
+			$(event.target).text("add");
+		}
+	})
 })
+
+
+function appendDataToHtml(data) {
+
+	let products = "";
+
+	for (let i = 0; i < data.length; i++) {
+		let name = data[i].name,
+			cuisine = data[i].cuisine,
+			address = data[i].address,
+			price = data[i].price_range,
+			image = data[i].image;
+		if (image === null) {
+			image = "../img/no-image-available.jpg"
+		}
+
+		//create product cards
+		products += "<div class='col-sm-4 product' data-name='" + name + "' data-cuisine='" + cuisine + "' data-address='" + address + "' data-price='" + price + "'><div class='product-inner text-center'><img src='" + image + "'><br />Name: " + name + "<br />Cuisine: " + cuisine + "<br />Address: " + address + "<br />Price: " + price + "<br /><button type='button' class='btn btn-primary selection'>add</button></div></div>";
+
+		$("#products").html(products);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // let filtersObject = {};
 

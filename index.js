@@ -48,7 +48,7 @@ app.use(expressSession({
 passportSetup(app, knex);
 
 // Routes
-const ViewRouter = require('./ViewRouter');
+const ViewRouter = require('./viewRouter.js');
 const SettingsRouter = require('./routes/settingsRouter');
 const EventRouter = require('./routes/eventRouter');
 const PlaceRouter = require('./routes/placeServiceRouter');
