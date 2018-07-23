@@ -66,7 +66,7 @@ app.use('/',new ViewRouter().router());
 app.use('/settings', (new SettingsRouter(userService)).router());
 app.use('/api/places',new PlaceRouter(placeService).router());
 app.use('/api', isLoggedIn, (new EventRouter(eventService)).router());
-app.use('/addevent', isLoggedIn, (new EventRouter(eventService)).router());
+app.use('/event', isLoggedIn, (new EventRouter(eventService)).router());
 // app.use('/api/add-invitee', (new EventRouter(eventService)).router()); // 
 
 

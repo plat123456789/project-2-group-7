@@ -1,16 +1,20 @@
-{{>login-nav-bar}}
+{{>navigation-bar}}
 
 <link rel="stylesheet" href="/css/login.css">
 
-<div class="login-page">
-    <div class="form">
-        <h6>Create Event</h6>
-        <form class="invite-form" action="/addevent" method="post">
-            <input type="text" placeholder="Event Title" name="title"/>
-            <input type="textarea" placeholder="Event Detail" name="detail"/>
+<body>
+    <div class="login-page">
+        <div class="form">
+            <h6>Create Event</h6>
+            <form class="invite-form" action="/" method="post">
+                <input type="text" placeholder="Event Title" name="title" required/>
+                <input type="textarea" placeholder="Event Detail" name="detail"/>
 
-        <button type="submit">Next</button>
-        </form>
+                <button type="submit" id="postBtn"> Next</button>
+            </form>
+        </div>
+        
     </div>
-    
-</div>
+
+    <script src="/js/event.js"></script>
+</body>

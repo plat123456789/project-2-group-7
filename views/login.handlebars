@@ -3,11 +3,12 @@
 <link rel="stylesheet" href="/css/login.css">
 
 <div class="login-page">
+
   <div class="form">
     <h6>Login</h6>
     <form class="register-form" action="/signup" method="post">
       <input type="text" placeholder="name" name="name"/>
-      <input type="text" placeholder="email address" name="username"/>
+      <input type="email" placeholder="email address" name="username"/>
       <input type="password" placeholder="password" name="password"/>
       <button type="submit">create</button>
       <p class="message">Already registered?
@@ -15,7 +16,7 @@
       </p>
     </form>
     <form class="login-form" action="/login" method="post">
-      <input type="text" placeholder="email" name="username"/>
+      <input type="email" placeholder="email" name="username"/>
       <input type="password" placeholder="password" name="password"/>
       <button type="submit">login</button>
       <p class="message">Not registered?
@@ -24,5 +25,8 @@
     </form>
   </div>
 </div>
+
+  <div id="error-msg">
+  </div>
 
 <script type='text/javascript' src="js/login.js"></script>

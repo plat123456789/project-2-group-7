@@ -36,7 +36,7 @@ module.exports = class ViewRouter{
         }));
 
         // Logout
-        router.get('/', isLoggedIn, function (req, res) {
+        router.get('/logout', isLoggedIn, function (req, res) {
             req.logout();
             res.redirect('/login');
         })
@@ -47,6 +47,7 @@ module.exports = class ViewRouter{
         })
 
         // Date 
+        // router.get('/date', function (req, res) {
         router.get('/date', function (req, res) {
             res.render('date');
         });
@@ -66,7 +67,10 @@ module.exports = class ViewRouter{
 
         // User account setting
         router.get('/settings', isLoggedIn, function (req, res) {
-            res.render('settings')
+            res.render('settings', {
+                name: req.user.name,
+                email: req.user.email
+            })
         })
 
         // Create event
@@ -75,9 +79,9 @@ module.exports = class ViewRouter{
         })
 
         // Add invitee
-        // router.get('/invite', function (req, res) {
-        //     res.render('invite')
-        // })
+        router.get('/invite', function (req, res) {
+            res.render('invite')
+        })
 
 
         return router;

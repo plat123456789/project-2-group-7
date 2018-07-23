@@ -19,5 +19,14 @@
 .event-item {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+}
+
+.event-item a {
+    text-decoration: none;
+}
+
+.event-item a:hover, a:link {
+    color: black;
+    text-decoration: none;
 }

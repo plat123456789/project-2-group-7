@@ -9,59 +9,34 @@
 
         <div class="sidebar col-md-4">
             <div class="form-check">
-                <input class="form-check-input" type="radio" id="all" name="category" checked>
+                <input class="form-check-input" type="radio" id="all" name="status" value="all" checked>
                 <label class="form-check-label" for="all">
                     All
                 </label>            
             </div>
+            
             <div class="form-check">
-                <input class="form-check-input" type="radio" id="upcoming" name="category">
-                <label class="form-check-label" for="upcoming">
-                    Upcoming
-                </label>            
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="pending" name="category">
+                <input class="form-check-input" type="radio" id="pending" name="status" value="pending">
                 <label class="form-check-label" for="pending">
                     Pending
                 </label>            
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" id="confirmed" name="category">
+                <input class="form-check-input" type="radio" id="confirmed" name="status" value="confirmed">
                 <label class="form-check-label" for="confirmed">
                     Confirmed
                 </label>            
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="cancelled" name="category">
-                <label class="form-check-label" for="cancelled">
-                    Cancelled
-                </label>            
-            </div>
+           
         </div>
 
         <div class="event-summary col-md-8">
 
-            <div class="event-item">
-                <div class="event-text">
-                    <strong>Example Event Title</strong>
-                    <ul>
-                        <li><i class="far fa-calendar"></i>   Date: </li>
-                        <li><i class="fas fa-map-marker-alt"></i>  Place: </li>
-                        <li><i class="fas fa-user"></i>  3 invitees</li> 
-                    </ul>
-                </div>
-                <div class="event-status">
-                    status
-                </div>
-            </div>   
-
             <div id="event-list">               
             </div>   
-
         </div>    
     </div>
 </div>
 
-<script src="/js/event.js"></script>
+    <script src="/js/event.js"></script>
 </body>
