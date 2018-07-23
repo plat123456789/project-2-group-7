@@ -61,7 +61,7 @@ $(() => {
         $('#postBtn').attr('disabled', true);
 
         $('.required').keyup(() => {
-            if ($(this).val().length !== 0) {
+            if ($('.required').val().length !== 0) {
                 $('#postBtn').prop('disabled', false);            
             }
             else {
