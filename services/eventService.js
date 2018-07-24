@@ -1,7 +1,6 @@
 //X list all events
-// filter by status
 //X add new event
-// invite participant
+//X invite participant
 // update event info
 // confirm event
 // cancel event
@@ -13,50 +12,19 @@ class eventService {
    
     // list on homepage 
     listAllEvent(userId) { // req.user.id
-           // let eventItem = {};
+        return this.knex
+                .column('event.id', 'event.title', 'event.status', 'event.detail')
+                // .countDistinct({inviteeNo: 'EvtUser.email'})
+                .countDistinct({dateNo: 'dateOption.id'})
+                .countDistinct({placeNo: 'placeOption.id'})
 
-        let query = this.knex.select('event.id', 'event.title', 'event.status', 'event.detail')
-            .from('event')
-            .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
-            .where('EvtUser.user_id', userId)
-            .orderBy('event.created_at');
-
-            return query.then(rows => {
-                let eventId = rows.id
-
-                  let dates =  this.knex.count('dateOption.date')
-                    .from('dateOption')
-                    .innerJoin('event', 'event.id', 'dateOption.event_id')
-                    .where('dateOption.event_id', eventId);
-
-                return rows.map(row => ({
-                        id:    row.id, 
-                        title: row.title,
-                        status: row.status,
-                        detail: row.detail
-                        // noOfinvitee: count ?,
-                        // date: row.date,
-                        // place: row.place
-                    })
-                )
-            })
-        //     let count = this.knex.count('EvtUser.email')
-        //         .from('EvtUser')
-        //         .where('EvtUser.event_id', eventId)  // pass query's event.id as condition ?
-        
-       
-
-        // return Promise.all(query, count, dates).then((val) => {
-        //     console.log(val)
-        // })
-
-            // testing
-            // let query = this.knex.count('EvtUser.email').column('event.id', 'event.title', 'event.status')
-            //     .from('event')
-            //     .orderBy('event.created_at')
-            //     .where('EvtUser.user_id', userId)
-            //     .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
-            //     .groupBy('event.id')
+                .from('event').where('EvtUser.user_id', userId)
+                .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
+                .innerJoin('dateOption', 'dateOption.event_id', 'EvtUser.event_id')
+                .innerJoin('placeOption', 'placeOption.event_id', 'EvtUser.event_id')
+                
+                .groupBy('event.id')
+                .orderBy('event.created_at', 'desc')
 
     }
 
@@ -139,12 +107,9 @@ class eventService {
     // list invitee
     listUser(eventId) {
         return this.knex('EvtUser')
-                    .select('email')
-                    .where('EvtUser.event_id', eventId)
-                    .andWhere('isCreator', false);                   
+                    .select();
+                                  
     }
-    
-    
 }
 
 module.exports = eventService;

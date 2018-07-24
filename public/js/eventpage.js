@@ -36,10 +36,6 @@ $(() => {
                 </div>
             </div>`
         }
-        
-        // confirm event
-
-        // cancel event
 
         // date options
         $.get(`/api/date`).then((data) => {
@@ -83,5 +79,35 @@ $(() => {
                     <li>District: ${district}</li>
                 </ul>                
             </div>`
-        }         
+        }       
+        
+        // invitee
+        $.get(`/api/event/invitee`).then((data) => {
+            data.forEach(e => {
+                if(e.event_id == eventId) {
+                    $('#invitee-list').append(Invitees(
+                        e.email
+                    )) 
+                }                   
+            });
+        })
+        const Invitees = (email)=>{
+            return `   
+                <div class="email">
+                    <p>${email}</p>             
+                </div>`
+        }      
+
+        // confirm event
+        // $('#confirm').click(() => {
+        //     $.post('/api/event/confirm', {
+        //         eventId: eventId
+        //     })
+        //     .then((data) => {
+        //         console.log(data)
+        //     })
+            
+        // })
+
+        // cancel event
 })

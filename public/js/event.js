@@ -6,7 +6,11 @@ $(() => {
                 $('#event-list').append(ListAllEvent(
                     e.id,
                     e.title,
-                    e.status
+                    e.status,
+                    e.dateNo,
+                    e.inviteeNo,
+                    e.placeNo
+
                 ));
             });
         } else {
@@ -19,16 +23,15 @@ $(() => {
                             <button type="button" class="btn btn-warning">Create Event</button>
                         </a>`;
 
-        const ListAllEvent = (id, title, status)=>{
+        const ListAllEvent = (id, title, status, dateNo, inviteeNo, placeNo)=>{
             return `
             <a href="/event/${id}">
                 <div class="event-item ${status}" id="${id}">
                     <div class="event-text">
                         <h6>${title}</h6> 
                         <ul>
-                            <li><i class="far fa-calendar"></i>   Date: </li>
-                            <li><i class="fas fa-map-marker-alt"></i>  Place: </li>
-                            <li><i class="fas fa-user"></i>   invitees</li> 
+                            <li><i class="far fa-calendar"></i>   Date: ${dateNo} dates</li>
+                            <li><i class="fas fa-map-marker-alt"></i>  Place: ${placeNo} places</li>
                         </ul>
                     </div>
 
