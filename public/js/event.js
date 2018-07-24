@@ -9,7 +9,7 @@ $(() => {
             detail: e.target.parentElement.detail.value
         }).then((response) => {
             // change for deploy
-            document.location=('http://localhost:3000/event/' + response[0] +'/date')
+            document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
             //console.log(response)
         })
     
