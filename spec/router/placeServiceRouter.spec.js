@@ -42,22 +42,36 @@ describe('placeServiceRouter ', () => {
     beforeEach(()=>{
         placeService = jasmine.createSpyObj("placeService",{
             
-            list27RandomPlace: Promise.resolve(resultPlaces),
+        list27RandomPlace: Promise.resolve(resultPlaces),
         });
         placeRouter = new PlaceRouter(placeService);
-        placeRouter.router();
+;
         req = jasmine.createSpyObj('req',['params','query','body']);
         res = jasmine.createSpyObj('res',['json']); 
     });
 
-    it(" should run router method successfully",()=>{
+    it("should run router method successfully",()=>{
         placeRouter.router();
     });
 
-    // it(" should support search method",(done)=>{
-    //     placeRouter.get(req,res).then(()=>{
-    //         expect(res.json).toHaveBeenCalledWith(resultDatetimes);
+    it("should support getInitial method",(done)=>{
+        placeRouter.getInitial(req,res).then(()=>{
+            expect(res.json).toHaveBeenCalledWith(resultPlaces);
+            done();
+        })
+    });
+
+    it("should support post method",(done)=>{
+        placeRouter.post(req,res).then(()=>{
+            expect(res.json).toHaveBeenCalledWith([1])
+            done();
+        });
+    });
+
+    // it("should support search method",(done)=>{
+    //     placeRouter.search(req,res).then(()=>{
+    //         expect(res.json).toHaveBeenCalledWith(resultPlaces)
     //         done();
-    //     })
+    //     });
     // });
 })
