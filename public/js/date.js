@@ -1,5 +1,8 @@
 $(document).ready(function(){
-        
+
+    let url = window.location.pathname;
+
+    let eventId = url.match(/\/event\/(\d+)\/date/)[1];
 
     $("#basicDate").flatpickr({
         enableTime: true,
@@ -24,24 +27,47 @@ $(document).ready(function(){
             }else{
                 $("#continue").prop('disabled', true);
             };
+
+            let dateArry = [];
+
+            if($('#basicDate').val()!=""){
+                dateArry = $('#basicDate').val().split(",");
+            }
+
+            let selected = "";
+
+            for (let i = 0; i < dateArry.length; i++) {
+
+                let dateTime = dateArry[i];
+    
+                selected += "<li class='list-group-item'>"+dateTime+"</li>"
+            }
+
+            $(".selected-list").html(selected);
+
         },
     });
 
     $("#continue").click(function(){
         let result = $("#basicDate").val().split(',');
 
-        let resultObj = {};
+        let temp = {};
+
+        let resultArry = [];
 
         for(let i = 0; i<result.length; i++){
-            resultObj["dateTime"+i] = result[i];
+            temp.dateTime = result[i];
+            temp.event_id = eventId;
+            resultArry.push(temp);
+            temp = {};
           }
         
         $.ajax({
-            url: "/date",
+            url: "/api/date",
             type: "POST",
-            data: resultObj,
+            data: {"dateTime": JSON.stringify(resultArry)}
         })
-        .done(console.log(resultObj))
+        .done(data=> document.location=('http://localhost:3000/event/' + data[0] +'/place'))
         .fail(function(err){
             console.log(err)
         })

@@ -54,10 +54,10 @@ describe('placeServiceRouter ', () => {
         placeRouter.router();
     });
 
-    it(" should support search method",(done)=>{
-        placeRouter.get(req,res).then(()=>{
-            expect(res.json).toHaveBeenCalledWith(resultDatetimes);
-            done();
-        })
-    });
+    // it(" should support search method",(done)=>{
+    //     placeRouter.get(req,res).then(()=>{
+    //         expect(res.json).toHaveBeenCalledWith(resultDatetimes);
+    //         done();
+    //     })
+    // });
 })

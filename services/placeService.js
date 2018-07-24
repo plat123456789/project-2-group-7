@@ -1,5 +1,7 @@
 const PLACE = require("./tables").PLACE;
 
+const PLACEOPTION = require("./tables").PLACEOPTION;
+
 class placeService {
     constructor(knex) {
         this.knex = knex;
@@ -8,22 +10,21 @@ class placeService {
     // remove placeOption
     // list placeOption
 
-    addPlace(place, event) {
-        let query = this.knex
-            .select('name', 'district')
-            .from(PLACE)
-            .where('event.id', event);
+    addPlace(placeArry){
 
-        return query.then((rows) => {
-            if (rows.length === 1) { // what is rows ?
-                this.knex.insert({
-                    place_id: place.id,
-                    event_id: event.id
-                }).into('placeOption');
-            } else {
-                throw new Error('Event does not exist');
-            }
-        })
+        let insertArry = [];
+
+        let tempObj = {};
+
+        for (let i = 0; i < placeArry.length; i++) {
+
+            tempObj.event_id = placeArry[i].event_id;
+            tempObj.place_id = placeArry[i].place_id;
+            insertArry.push(tempObj)
+            tempObj = {};
+        }
+        return this.knex(PLACEOPTION).insert(insertArry).returning("event_id")
+        .catch(err=>console.log(err));
     }
 
     removePlace() {

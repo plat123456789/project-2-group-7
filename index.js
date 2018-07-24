@@ -52,23 +52,36 @@ const ViewRouter = require('./viewRouter.js');
 const SettingsRouter = require('./routes/settingsRouter');
 const EventRouter = require('./routes/eventRouter');
 const PlaceRouter = require('./routes/placeServiceRouter');
+const DateTimeRouter = require('./routes/DateTimeRouter');
 
 // Services
 const UserService = require('./services/userService');
 const PlaceService = require('./services/placeService');
 const EventService = require('./services/eventService');
+const DateTimeService = require('./services/DateTimeService');
 
 let userService = new UserService(knex);
 let placeService = new PlaceService(knex);
 let eventService = new EventService(knex);
+let dateTimeService = new DateTimeService(knex);
 
 app.use('/',new ViewRouter().router());
 app.use('/settings', (new SettingsRouter(userService)).router());
 app.use('/api/places',new PlaceRouter(placeService).router());
 app.use('/api', isLoggedIn, (new EventRouter(eventService)).router());
 app.use('/event', isLoggedIn, (new EventRouter(eventService)).router());
-// app.use('/api/add-invitee', (new EventRouter(eventService)).router()); // 
+app.use('/api/date',new DateTimeRouter(dateTimeService).router());
+// app.use('/api/add-invitee', (new EventRouter(eventService)).router()); //
 
+
+
+app.get("/event/:id/date", function (req, res) {
+    res.render('date');
+})
+
+app.get("/event/:id/place", function (req, res) {
+    res.render('place');
+})
 
 app.listen(port, function () {
     console.log("listening on " + port);

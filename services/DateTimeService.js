@@ -7,25 +7,36 @@ class DateTimeService {
         this.knex = knex;
     }
 
-    listDateTime(limit=100,offset=0){
+    listDateTime(limit = 100, offset = 0) {
         return this.knex.select("*")
-                    .from(dateTimes)
-                    .limit(limit).offset(offset);
+            .from(dateTimes)
+            .limit(limit).offset(offset);
     }
-    
-    addDateTime(dateString) { 
-        let tempDateTime = new Date(dateString);
 
-        return this.knex(dateTimes).insert({
-            date:       tempDateTime.toDateString(), 
-            start_time: tempDateTime.toTimeString().replace("GMT+0800",""),
-            iso_string: tempDateTime.toISOString(),
-        }).returning("id");
+    addDateTime(dateArray) {
+
+        let insertArry = [];
+
+        let tempObj = {};
+
+        for (let i = 0; i < dateArray.length; i++) {
+            let date = new Date(dateArray[i].dateTime)
+
+            tempObj.event_id = dateArray[i].event_id;
+            tempObj.date = date.toDateString();
+            tempObj.start_time = date.toTimeString().replace("GMT+0800", ""),
+                tempObj.iso_string = date.toISOString();
+            insertArry.push(tempObj)
+            tempObj = {};
+        }
+
+        return this.knex(dateTimes).insert(insertArry).returning("event_id")
+        .catch(err=>console.log(err));
     }
 
     searchDateTime(event_id) {
-        return this.knex(dateTimes) 
-            .select('date', 'start_time', "iso_string")           
+        return this.knex(dateTimes)
+            .select('date', 'start_time', "iso_string")
             .where('event_id', event_id);
     }
 
@@ -36,18 +47,19 @@ class DateTimeService {
         return this.knex(dateTimes)
             .update({
                 date: temp.toDateString(),
-                start_time: temp.toTimeString().replace("GMT+0800",""),
+                start_time: temp.toTimeString().replace("GMT+0800", ""),
                 iso_string: temp.toISOString(),
             })
             .where('id', dateOption_id);
     }
 
     removeDateTime(dateOption_id) {
-        return this.knex(dateTimes)            
+        return this.knex(dateTimes)
             .where('id', dateOption_id)
             .del();
-    }  
+    }
 }
+
 
 
 module.exports = DateTimeService;

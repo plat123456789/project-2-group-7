@@ -12,14 +12,28 @@ button {
     padding: 12px 10px;
     text-align: center;
     cursor: pointer;
-    background: coral;
-    color: whitesmoke;
 }
 
 button:disabled {
-    background-color: rgb(187, 185, 182);
+    opacity: 0.1;
 }
 
 .flatpickr-clear {
     height: 500px, !important
+}
+
+#continue{
+    margin: 20px
+}
+
+#basicDate{
+    display:none;
+}
+
+.selected-list{
+    margin-top: 20px
+}
+
+.listoff{
+    display: none;
 }

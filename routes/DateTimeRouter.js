@@ -25,8 +25,9 @@ class DateTimeRouter{
     }
 
     post(req,res){
-        //Validation Logic
-        return this.dateTimeService.addDateTime(req.body)
+        //Validation Logig
+        
+        return this.dateTimeService.addDateTime(JSON.parse(req.body.dateTime))
             .then((data)=>res.json(data))
             .catch((err)=> res.status(500).json(err));
     }

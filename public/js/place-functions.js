@@ -13,7 +13,8 @@ function addSelectedPlacesToSelectedArray(target) {
 
 	let selectedObj = {
 		name: target.parent().parent()[0].dataset.name,
-		id: target.parent().parent()[0].dataset.id
+		place_id: target.parent().parent()[0].dataset.id,
+		event_id: eventId
 	};
 
 	if (target.parent()[0].className.includes("green")) {
@@ -96,12 +97,4 @@ function appendAjaxDataToHtml(data) {
 
 		$("#products").html(products);
 	}
-}
-
-module.exports = {
-    changeDivColorToIndicateSelected,
-    addSelectedPlacesToSelectedArray,
-	addSelectedArrayToSelectedList,
-	createUndoActionInSelectedList,
-    appendAjaxDataToHtml,
 }

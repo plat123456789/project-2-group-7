@@ -10,10 +10,19 @@ class PlaceRouter {
     router() {
         let router = express.Router();
 
+        router.post("/", this.post.bind(this));
         router.get("/initialPlaceData", this.getInitial.bind(this));
         router.post("/search", this.search.bind(this));
 
+
         return router;
+    }
+
+    post(req,res){
+        //Validation Logig
+        return this.placeService.addPlace(JSON.parse(req.body.placeData))
+            .then((data)=>res.json(data))
+            .catch((err)=> res.status(500).json(err));
     }
 
     getInitial(req, res) {

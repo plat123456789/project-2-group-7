@@ -36,12 +36,12 @@ describe('DateTimeRouter ',()=>{
         })
     });
 
-    it(" should support post method",(done)=>{
-        dateTimeRouter.post(req,res).then(()=>{
-            expect(res.json).toHaveBeenCalledWith([1])
-            done();
-        });
-    });
+    // it(" should support post method",(done)=>{
+    //     dateTimeRouter.post(req,res).then(()=>{
+    //         expect(res.json).toHaveBeenCalledWith([1])
+    //         done();
+    //     });
+    // });
 
     it(" should support put method",(done)=>{
         dateTimeRouter.put(req,res).then(()=>{

@@ -10,7 +10,7 @@ $(() => {
         }).then((response) => {
             // change for deploy
             document.location=('http://localhost:3000/event/' + response[0] +'/date')
-
+            //console.log(response)
         })
     
     })
