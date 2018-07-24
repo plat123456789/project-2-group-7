@@ -1,24 +1,6 @@
 $(() => {
-    $('#postBtn').click((e)=> {
-        e.preventDefault();
-// console.log(e.target.parent);
-//         return;
-
-        $.post('/event',{
-            title: e.target.parentElement.title.value,
-            detail: e.target.parentElement.detail.value
-        }).then((response) => {
-            // change for deploy
-            document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
-            //console.log(response)
-        })
-    
-    })
-    
-    
-    // List all events
-    //homepage
-    $.get(`/api/events`).then((data) => {
+    // List all events on homepage
+    $.get(`/api/event/events`).then((data) => {
         if(data.length !== 0) {
             data.forEach(e => {
                 $('#event-list').append(ListAllEvent(
@@ -56,20 +38,7 @@ $(() => {
                 </div>
             </a>`
         }
-
-        // disable create button if no title
-        $('#postBtn').attr('disabled', true);
-
-        $('.required').keyup(() => {
-            if ($('.required').val().length !== 0) {
-                $('#postBtn').prop('disabled', false);            
-            }
-            else {
-                $('#postBtn').prop('disabled', true);   
-            }
-        })   
-
-        // filter button WORKING
+        // filter button
         $("input[name='status']").click(() => {
             let currentStatus =  $("input[name='status']:checked").val();
 
@@ -85,6 +54,33 @@ $(() => {
             }
             
         })
-        
+    
+        // create-event
+        $('#postBtn').click((e)=> {
+            e.preventDefault();
+        // console.log(e.target.parent);
+        // return;
+
+        $.post('/api/event',{
+            title: e.target.parentElement.title.value,
+            detail: e.target.parentElement.detail.value
+        }).then((response) => {
+            // change for deploy 
+            document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
+            // document.location=('http://localhost:3000/event/' + response[0] +'/date')
+            
+        })    
+    })
+        // disable create button if no title
+        $('#postBtn').attr('disabled', true);
+
+        $('.required').keyup(() => {
+            if ($('.required').val().length !== 0) {
+                $('#postBtn').prop('disabled', false);            
+            }
+            else {
+                $('#postBtn').prop('disabled', true);   
+            }
+        })   
 
 })
