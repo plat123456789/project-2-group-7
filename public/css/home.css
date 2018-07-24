@@ -8,8 +8,8 @@
 
 .event-text ul {
     list-style: none;
+    padding-top: 6px;
     padding-left: 0;
-    padding-bottom: 4px;
 }
 
 .event-text li {
@@ -20,6 +20,10 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
+    padding-top: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px #b9b9b9;
+    background-color: #fff;
 }
 
 .event-item a {

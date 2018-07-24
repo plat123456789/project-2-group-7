@@ -71,7 +71,7 @@ app.use('/api/places',new PlaceRouter(placeService).router());
 app.use('/api', isLoggedIn, (new EventRouter(eventService)).router());
 app.use('/event', isLoggedIn, (new EventRouter(eventService)).router());
 app.use('/api/date',new DateTimeRouter(dateTimeService).router());
-// app.use('/api/add-invitee', (new EventRouter(eventService)).router()); //
+app.use('/api/add-invitee', (new EventRouter(eventService)).router());
 
 
 
@@ -81,6 +81,10 @@ app.get("/event/:id/date", function (req, res) {
 
 app.get("/event/:id/place", function (req, res) {
     res.render('place');
+})
+
+app.get("/event/:id/invite", function (req, res) {
+    res.render('invite');
 })
 
 app.listen(port, function () {
