@@ -9,13 +9,8 @@ $(() => {
             detail: e.target.parentElement.detail.value
         }).then((response) => {
             // change for deploy
-<<<<<<< HEAD
             document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
             //console.log(response)
-=======
-            document.location=('http://localhost:3000/event/' + response[0] +'/date')
-             //console.log(response)
->>>>>>> b584a47b63d89552464f3d1d559489bb9482d97b
         })
     
     })

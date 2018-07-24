@@ -24,9 +24,9 @@ class DateTimeService {
 
             tempObj.event_id = dateArray[i].event_id;
             tempObj.date = date.toDateString();
-            tempObj.start_time = date.toTimeString().replace("GMT+0800", ""),
-                tempObj.iso_string = date.toISOString();
-            insertArry.push(tempObj)
+            tempObj.start_time = date.toTimeString().replace("GMT+0800", "");
+            tempObj.iso_string = date.toISOString();
+            insertArry.push(tempObj);
             tempObj = {};
         }
 
