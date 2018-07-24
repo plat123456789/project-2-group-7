@@ -67,7 +67,7 @@ $(document).ready(function(){
             type: "POST",
             data: {"dateTime": JSON.stringify(resultArry)}
         })
-        .done(data=> document.location=('http://localhost:3000/event/' + data[0] +'/place'))
+        .done(data=> document.location=(window.location.protocol +"//" +window.location.hostname+ "/event/" + data[0] +"/place"))
         .fail(function(err){
             console.log(err)
         })

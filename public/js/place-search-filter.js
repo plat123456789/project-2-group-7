@@ -105,7 +105,7 @@ $(document).ready(function () {
 			url: "/api/places",
 			type: "POST",
 			data: {"placeData": JSON.stringify(selectedArray)},
-		}).done(data=>document.location=('http://localhost:3000/event/' + data[0]))
+		}).done(data=>document.location=(window.location.protocol + "//" +window.location.hostname + data[0]))
 	})
 
 })
