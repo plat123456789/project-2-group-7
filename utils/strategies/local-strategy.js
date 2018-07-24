@@ -53,11 +53,21 @@ module.exports = (app, knex) => {
                     };
                     let userId = await knex('user').insert(newUser).returning("id").catch(err=> {console.log(err)});
                     newUser.id = userId;
-
+                    
                     console.log('User signup successful')
                     done(null, newUser);
-                }
+                    
+                    // if new user's email has been invited, insert user id into EvtUser
+                    let invitation = await knex.select('email').from('EvtUser').where('email', email);
 
+                    if (invitation.length !== 0) {
+                        console.log('User invited!!')
+                        return knex('EvtUser')
+                            .update({ user_id: Number(newUser.id) })
+                            .where('email', email)
+                    } 
+                }
+                
             } catch(err) {
                 console.log(err);
                 done(err);

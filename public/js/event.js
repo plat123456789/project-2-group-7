@@ -10,7 +10,7 @@ $(() => {
         }).then((response) => {
             // change for deploy
             document.location=('http://localhost:3000/event/' + response[0] +'/date')
-            //console.log(response)
+             //console.log(response)
         })
     
     })
@@ -40,9 +40,9 @@ $(() => {
         const ListAllEvent = (id, title, status)=>{
             return `
             <a href="/event/${id}">
-                <div class="event-item" id="${id}">
+                <div class="event-item ${status}" id="${id}">
                     <div class="event-text">
-                        <strong>${title}</strong> 
+                        <h6>${title}</h6> 
                         <ul>
                             <li><i class="far fa-calendar"></i>   Date: </li>
                             <li><i class="fas fa-map-marker-alt"></i>  Place: </li>
@@ -70,10 +70,21 @@ $(() => {
         })   
 
         // filter button WORKING
-        $("input[name='status']").click((() => {
+        $("input[name='status']").click(() => {
+            let currentStatus =  $("input[name='status']:checked").val();
 
-            $("input[name='status']:checked").val();
-        }))
+            if(currentStatus == 'Confirmed') {
+                $('.Confirmed').show();
+                $('.Pending').hide();
+            } 
+            if(currentStatus == 'Pending') {
+                $('.Pending').show();
+                $('.Confirmed').hide();
+            } else if(currentStatus == 'All') {
+                $('.event-item').show();
+            }
+            
+        })
         
 
 })
