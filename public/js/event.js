@@ -18,7 +18,7 @@ $(() => {
     
     // List all events
     //homepage
-    $.get(`/api/event`).then((data) => {
+    $.get(`/api/event/events`).then((data) => {
         if(data.length !== 0) {
             data.forEach(e => {
                 $('#event-list').append(ListAllEvent(
