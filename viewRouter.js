@@ -78,10 +78,10 @@ module.exports = class ViewRouter{
             res.render('create')
         })
 
-        // Add invitee
-        router.get('/invite', function (req, res) {
-            res.render('invite')
-        })
+        // // Add invitee
+        // router.get('/invite', function (req, res) {
+        //     res.render('invite')
+        // })
 
 
         return router;
