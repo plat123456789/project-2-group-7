@@ -47,7 +47,7 @@ $(() => {
                     if(e.event_id == eventId) {
                         $('#date-list').append(Dates(
                             e.id,
-                            e.date.replace(),
+                            e.date.replace(/T.*/,""),
                             e.start_time
                         )) 
                     }                   
