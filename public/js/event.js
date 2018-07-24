@@ -4,7 +4,7 @@ $(() => {
 // console.log(e.target.parent);
 //         return;
 
-        $.post('/event',{
+        $.post('/api/event',{
             title: e.target.parentElement.title.value,
             detail: e.target.parentElement.detail.value
         }).then((response) => {
