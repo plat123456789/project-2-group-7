@@ -30,7 +30,37 @@
     text-decoration: none;
 }
 
-.event-item a:hover, a:link {
+.event-item a:hover, a:link, a:visited{
     color: black;
     text-decoration: none;
+}
+
+/* Event Details */
+.event-box {
+    margin-top: 16px;
+    margin-bottom: 20px;
+    padding: 5px 40px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px #b9b9b9;
+    background-color: #fff;
+}
+
+.options {
+    border-radius: 5px;
+    background-color: rgb(228, 241, 250);
+}
+
+.options ul {
+    list-style: none;
+    padding: 10px 20px;
+}
+
+.btn {
+    margin: 2px;
+    width: 85px;
+    border-radius: 20px;
+}
+
+.event-box h4 {
+    padding: 16px;
 }

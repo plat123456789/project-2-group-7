@@ -78,6 +78,11 @@ module.exports = class ViewRouter{
             res.render('create')
         })
 
+        //  Event details 
+        router.get('/event/:id', isLoggedIn, function (req, res) {
+            res.render('eventpage')
+        })
+
         // // Add invitee
         // router.get('/invite', function (req, res) {
         //     res.render('invite')

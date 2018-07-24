@@ -12,6 +12,7 @@ class PlaceRouter {
 
         router.post("/", this.post.bind(this));
         router.get("/initialPlaceData", this.getInitial.bind(this));
+        router.get("/", this.listPlace.bind(this));
         router.post("/search", this.search.bind(this));
 
 
@@ -35,6 +36,12 @@ class PlaceRouter {
     search(req, res) {
         //Validation Logic
         return this.placeService.searchPlace(req.body.searchInput)
+            .then((data) => res.json(data))
+            .catch((err) => res.status(500).json(err));
+    }
+
+    listPlace(req, res) {
+        return this.placeService.listPlace()
             .then((data) => res.json(data))
             .catch((err) => res.status(500).json(err));
     }

@@ -9,10 +9,8 @@ class EventRouter {
         let router = express.Router();
 
         router.post('/', this.addEvent.bind(this));
-
+        router.post('/add-invitee', this.inviteUser.bind(this)); // route to be set
         router.get('/events', this.listAllEvent.bind(this));
-        // router.get('/events', this.filterEvent.bind(this));
-        // router.get('/events/:eventId/date', this.function.bind(this));
 
         return router;
     }
@@ -29,30 +27,13 @@ class EventRouter {
             .catch((err) => res.status(500).json(err));
     }
 
-    filterEvent(req, res) {
-        return this.eventService.filterEvent(req.user.id, req.body.status)
-            .then((event) => res.json(event))
-            .catch((err) => res.status(500).json(err));
+    inviteUser(req, res) {
+        console.log('hi')
+        return this.eventService.inviteUser(req.body.eventId, req.body.invitee)
+        .then((event) => res.json(event))
+        .catch((err) => res.status(500).json(err));
     }
-
 }
 
 module.exports = EventRouter;
 
-
-
-
-
-// router.post('/', (req, res) => {
-        //     return this.eventService.inviteUser(req.user.id, req.user.email, req.params.id, req.body.email)
-        //         // .then(() => this.eventService.listUser(req.params.id))
-        //         .then((invitees) => res.json(invitees))
-        //         .catch((err) => res.status(500).json(err));
-        // })
-
-        // router.get('/add-invitee', (req, res) => {
-        //     return this.eventService.inviteUser(req.user.id, req.user.email, req.params.id, req.body.email)
-        //         // .then(() => this.eventService.listUser(req.params.id))
-        //         .then((invitees) => res.json(invitees))
-        //         .catch((err) => res.status(500).json(err));
-        // })

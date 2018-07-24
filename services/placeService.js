@@ -33,8 +33,20 @@ class placeService {
 
     // namecard
     listPlace() {
-
+        return this.knex.select({
+            placeOptionId: 'placeOption.id', 
+            eventId: 'placeOption.event_id',
+            placeId: 'placeOption.place_id', 
+            name: 'place.name', 
+            districtId: 'place.district_id', 
+            district: 'district.name'
+        })
+        // return this.knex.select('*')
+            .from(PLACEOPTION)
+            .innerJoin(PLACE, 'place.id', 'placeOption.place_id')
+            .innerJoin('district', 'district.id', 'place.district_id');
     }
+
 
     // details on click
     placeDetail(place) {

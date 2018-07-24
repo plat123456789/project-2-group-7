@@ -14,7 +14,7 @@ body {
 
 p {
   font-size: 15px;
-  color: #a3a3a3;
+  color: #4d4d4d;
   line-height: 1.6;
   word-spacing: 1px;
   margin: 0;
@@ -36,6 +36,8 @@ p {
 
 .navbar {
   border-bottom: 1px solid rgb(201, 201, 201);
-  /* background-color: #fff; */
 }
 
+/* nav {
+  background-color: rgb(76, 145, 190);
+} */

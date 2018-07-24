@@ -68,10 +68,10 @@ let dateTimeService = new DateTimeService(knex);
 app.use('/',new ViewRouter().router());
 app.use('/settings', (new SettingsRouter(userService)).router());
 app.use('/api/places',new PlaceRouter(placeService).router());
-app.use('/api', isLoggedIn, (new EventRouter(eventService)).router());
-app.use('/event', isLoggedIn, (new EventRouter(eventService)).router());
+app.use('/api/event', isLoggedIn, (new EventRouter(eventService)).router()); // change
+// app.use('/event', isLoggedIn, (new EventRouter(eventService)).router());
 app.use('/api/date',new DateTimeRouter(dateTimeService).router());
-app.use('/api/add-invitee', (new EventRouter(eventService)).router());
+// app.use('/api/add-invitee', (new EventRouter(eventService)).router());
 
 
 

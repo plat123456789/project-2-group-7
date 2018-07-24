@@ -1,0 +1,32 @@
+ <link rel="stylesheet" href="/css/home.css">
+
+{{>navigation-bar}}
+
+<div class="myevents container">
+    
+    <div class="event-page row">
+
+        <div class="sidebar col-lg-5">
+            <div id="event-list">  
+            {{!-- event --}}
+            </div>        
+                
+        </div>
+
+        <div class="event-summary col-lg-7">
+            <div id="date-list" class="event-box"> 
+                <h5>Dates</h5> 
+                {{!-- date option --}}                
+            </div>
+
+            <div id="place-list" class="event-box">   
+                <h5>Places</h5>  
+
+                 {{!-- place option --}}                     
+            </div>
+
+        </div>    
+    </div>
+</div>
+
+    <script src="/js/eventpage.js"></script>

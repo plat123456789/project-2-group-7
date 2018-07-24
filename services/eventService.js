@@ -15,17 +15,25 @@ class eventService {
     listAllEvent(userId) { // req.user.id
            // let eventItem = {};
 
-        let query = this.knex.select('event.id', 'event.title', 'event.status')
+        let query = this.knex.select('event.id', 'event.title', 'event.status', 'event.detail')
             .from('event')
             .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
             .where('EvtUser.user_id', userId)
             .orderBy('event.created_at');
 
             return query.then(rows => {
+                let eventId = rows.id
+
+                  let dates =  this.knex.count('dateOption.date')
+                    .from('dateOption')
+                    .innerJoin('event', 'event.id', 'dateOption.event_id')
+                    .where('dateOption.event_id', eventId);
+
                 return rows.map(row => ({
                         id:    row.id, 
                         title: row.title,
-                        status: row.status
+                        status: row.status,
+                        detail: row.detail
                         // noOfinvitee: count ?,
                         // date: row.date,
                         // place: row.place
@@ -36,10 +44,7 @@ class eventService {
         //         .from('EvtUser')
         //         .where('EvtUser.event_id', eventId)  // pass query's event.id as condition ?
         
-        //  let dates =  this.knex.count('dateOption.date')
-        //     .from('dateOption')
-        //     .innerJoin('event', 'event.id', 'dateOption.event_id')
-        //     .where('dateOption.event_id', eventId);
+       
 
         // return Promise.all(query, count, dates).then((val) => {
         //     console.log(val)
@@ -53,23 +58,6 @@ class eventService {
             //     .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
             //     .groupBy('event.id')
 
-    }
-
-
-    filterEvent(userId, status) {
-        let query = this.knex.select('event.id', 'event.title', 'event.status')
-            .from('event')
-            .innerJoin('EvtUser', 'event.id', 'EvtUser.event_id')
-            .where('EvtUser.user_id', userId)
-            .andWhere('event.status', status) // 
-            .orderBy('event.created_at');
-
-        return query.then(rows => {
-            return rows.map(row => ({
-                    title: row.title,
-                    status: row.status
-                })
-        )})
     }
 
     addEvent(title, detail, userId, email) { // req.body.title, req.body.detail
@@ -119,9 +107,9 @@ class eventService {
         .returning('id')
     }
     
-    inviteUser(id, email, eventId, inviteeEmail) { // req.user.id, req.user.email, req.params.id, req.body.email
+    inviteUser(eventId, inviteeEmail) { // req.params.id, req.body.email
         // insert invitee email in EvtUser
-        // check if already exist in user, else insert user_id to EvtUser.user_id
+        // check if already exist in user, else insert user id to EvtUser.user_id
        
         return this.knex('EvtUser')
             .insert({
@@ -130,7 +118,7 @@ class eventService {
                 isCreator: false
             })            
         .then(() => {
-            let query=  this.knex('user')
+            let query = this.knex('user')
                 .select()
                 .innerJoin("EvtUser","EvtUser.email","user.email")
                 .where('user.email', 'EvtUser.email');
@@ -139,11 +127,11 @@ class eventService {
                 if(rows.length === 1) {
                     return this.knex('EvtUser').insert({
                         user_id: rows[0].id
-                    }).where('user.email', 'EvtUser.email');
-                } else {
-                    throw new Error('invitee not signed up');
-                }
+                    }).where('EvtUser.email', inviteeEmail);
+                } 
             })
+        }).catch((err)=> {
+            console.log(err)
         })
         
     }
