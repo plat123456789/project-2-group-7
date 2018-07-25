@@ -38,10 +38,7 @@ $(()=>{
 
     $('#sendBtn').click(() => {
         // change for deploy 
-        // document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
-        document.location=('http://localhost:3000/event/' + eventId )
-        
-        
+        document.location=(window.location.protocol +"//" +window.location.hostname+ "/event/" + eventId)
     })
 
     
