@@ -11,8 +11,8 @@ $(()=>{
             </div>`
     };
 
-    function showEmail(email) {
-        $('#email-list').append(Invitees(email));
+    function showEmail(invitee) {
+        $('#email-list').append(Invitees(invitee));
     }
 
     $('#invite').click((e) => {
@@ -34,6 +34,14 @@ $(()=>{
             })
         });
 
+    })
+
+    $('#sendBtn').click(() => {
+        // change for deploy 
+        // document.location=(window.location.protocol + "//"+ window.location.hostname+ '/event/' + response[0] +'/date')
+        document.location=('http://localhost:3000/event/' + eventId )
+        
+        
     })
 
     

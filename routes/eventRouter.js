@@ -9,8 +9,10 @@ class EventRouter {
         let router = express.Router();
 
         router.post('/', this.addEvent.bind(this));
-        router.post('/add-invitee', this.inviteUser.bind(this)); // route to be set
+        router.post('/add-invitee', this.inviteUser.bind(this)); 
+        router.post('/confirm', this.confirmEvent.bind(this)); 
         router.get('/events', this.listAllEvent.bind(this));
+        router.get('/invitee', this.listUser.bind(this));
 
         return router;
     }
@@ -28,9 +30,21 @@ class EventRouter {
     }
 
     inviteUser(req, res) {
-        console.log('hi')
         return this.eventService.inviteUser(req.body.eventId, req.body.invitee)
         .then((event) => res.json(event))
+        .catch((err) => res.status(500).json(err));
+    }
+
+    listUser(req, res) {
+        return this.eventService.listUser()
+        .then((data) => res.json(data))
+        .catch((err) => res.status(500).json(err));
+    }
+
+    confirmEvent(req, res) {
+        console.log('confirming', req.params.id)
+        return this.eventService.confirmEvent(req.params.id) 
+        .then((data) => res.json(data))
         .catch((err) => res.status(500).json(err));
     }
 }

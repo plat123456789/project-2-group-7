@@ -1,6 +1,12 @@
+.img-wrapper {
+	height: 200px;
+	overflow: hidden;
+}
+
 .product {
 	margin-bottom: 30px;
 }
+
 .product-inner {
 	box-shadow: 0 0 10px rgba(0,0,0,.2);
 	padding: 10px;
@@ -9,6 +15,12 @@
 	margin-bottom: 10px;
 	height: 100%;
 	width: 100%;
+	object-fit: cover;
+}
+
+.info {
+	font-size: 12px;
+	margin: 5px 0 10px 0;
 }
 
 .form-group{
@@ -16,11 +28,12 @@
 }
 
 #search{
-    margin-top: 50px;
+	margin-top: 20px;
+	margin-left: auto;
 }
 
 .green{
-	background-color: rgb(66, 170, 66);
+	background-color: rgb(181, 218, 245);
 	opacity: 0.8;
 }
 
@@ -45,7 +58,7 @@
 }
 
 .selected-list{
-	margin-top: 50px;
+	margin-top: 15px;
 }
 
 .listoff{
@@ -57,8 +70,9 @@
 }
 
 .top-button-row{
-	margin-top: 50px;
+	margin-top: 20px;
 }
+
 
 
 

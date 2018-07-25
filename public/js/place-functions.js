@@ -89,11 +89,11 @@ function appendAjaxDataToHtml(data) {
 			image = data[i].image;
 			id = data[i].id;
 		if (image === null) {
-			image = "../img/no-image-available.jpg"
+			image = "/img/no-image-available.jpg"
 		}
 
 		//create product cards
-		products += "<div class='col-sm-4 product' data-name='" + name + "' data-cuisine='" + cuisine + "' data-address='" + address + "' data-price='" + price + "' data-id='" + id + "'><div class='product-inner text-center'><img src='" + image + "'><br />Name: " + name + "<br />Cuisine: " + cuisine + "<br />Address: " + address + "<br />Price: " + price + "<br /><button type='button' class='btn btn-primary select'>add</button></div></div>";
+		products += "<div class='col-sm-4 product' data-name='" + name + "' data-cuisine='" + cuisine + "' data-address='" + address + "' data-price='" + price + "' data-id='" + id + "'><div class='product-inner'><div class='img-wrapper'><img src='" + image + "'></div><br /><strong>Name: " + name + "</strong><br />Cuisine: " + cuisine + "<br /><div class='info'>Address: " + address + "<br />Price: " + price + "<br /></div><button type='button' class='btn btn-primary select'>add</button></div></div>";
 
 		$("#products").html(products);
 	}
