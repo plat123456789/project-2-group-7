@@ -5,57 +5,78 @@ const knex = require('knex')(knexFile);
 describe("dateTimeService ", () => {
 
     let dt;
-    let dateArray = [ { dateTime: 'Aug 08 2019 12:00', event_id: '57' },
-    { dateTime: ' Aug 09 2018 12:00', event_id: '57' } ];
-    
+    let dateTimeArray = [{
+            dateTime: 'Jul 19 2019 18:35',
+            event_id: '1'
+        },
+        {
+            dateTime: 'Aug 20 2018 11:00',
+            event_id: '1'
+        }
+    ];
+
     beforeEach((done) => {
         dt = new DateTimeService(knex);
         knex('dateOption').del().then(() => done());
+
+    });
+
+    it("should support list method", (done) => {
+        dt.addDateTime(dateTimeArray)
+            .then(() => dt.listDateTime())
+            .then((data) => {
+
+                let date0 = new Date(data[0].date);
+
+                expect(date0.toString()).toEqual('Fri Jul 19 2019 00:00:00 GMT+0800 (HKT)');
+                expect(data[0].start_time).toEqual("18:35:00");
+                expect(data[0].iso_string).toEqual("2019-07-19T10:35:00.000Z");
+                expect(data[0].event_id).toEqual(1);
+
+                let date1 = new Date(data[1].date);
+
+                expect(date1.toString()).toEqual('Mon Aug 20 2018 00:00:00 GMT+0800 (HKT)');
+                expect(data[1].start_time).toEqual("11:00:00");
+                expect(data[1].iso_string).toEqual("2018-08-20T03:00:00.000Z");
+                expect(data[1].event_id).toEqual(1);
+
+                done();
+            })
     });
 
     it("should support add method", (done) => {
-        dt.addDateTime(dateArray).then(() => dt.listDateTime())
+        dt.addDateTime(dateTimeArray)
+            .then(() => dt.listDateTime())
             .then((data) => {
-                console.log(data)
-                done();
-            }).catch((err)=>{
-                console.log(err);
-            })
-    })
+                expect(data.length).toEqual(2);
 
-    // it("should support add method", (done) => {
-    //     dt.addDateTime(dateString)
-    //         .then(() => dt.listDateTime())
-    //         .then((data) => {
-    //             expect(data.length).toEqual(1);
-    //             expect(data[0].date.toString()).toEqual('Thu Jul 19 2018 00:00:00 GMT+0800 (HKT)');
-    //             expect(data[0].start_time).toEqual("18:35:00");
-    //             expect(data[0].iso_string).toEqual("2018-07-19T10:35:00.000Z");
-    //             done();
-    //         });
-    // });
+                let date0 = new Date(data[0].date);
+
+                expect(date0.toString()).toEqual('Fri Jul 19 2019 00:00:00 GMT+0800 (HKT)');
+                expect(data[0].start_time).toEqual("18:35:00");
+                expect(data[0].iso_string).toEqual("2019-07-19T10:35:00.000Z");
+                expect(data[0].event_id).toEqual(1);
+
+                let date1 = new Date(data[0].date);
+
+                expect(date1.toString()).toEqual('Fri Jul 19 2019 00:00:00 GMT+0800 (HKT)');
+                expect(data[1].start_time).toEqual("11:00:00");
+                expect(data[1].iso_string).toEqual("2018-08-20T03:00:00.000Z");
+                expect(data[1].event_id).toEqual(1);
+
+                done();
+            });
+    });
 
     // it("should support delete method", (done) => {
-    //     dt.addDateTime(dateString)
-    //         .then((ids) => dt.removeDateTime(ids[0]))
-    //         .then(() => dt.listDateTime())
-    //         .then((data) => {
-    //             expect(data.length).toEqual(0);
-    //             done();
-    //         });
+    //     dt.addDateTime(dateTimeArray)
+    //         .then(event_id => dt.searchDateTime(event_id[0]))
+    //         .then(data => {dt.removeDateTime(data[0].id);return data})
+    //         .then(data=> dt.searchDateTime(data[0].event_id))
+    //         .then(data => console.log(data))
     // });
 
-    // it("should support list method", (done) => {
-    //     dt.addDateTime(dateString)
-    //         .then(() => dt.listDateTime())
-    //         .then((data) => {
-    //             expect(data.length).toEqual(1);
-    //             expect(data[0].date.toString()).toEqual('Thu Jul 19 2018 00:00:00 GMT+0800 (HKT)');
-    //             expect(data[0].start_time).toEqual("18:35:00");
-    //             expect(data[0].iso_string).toEqual("2018-07-19T10:35:00.000Z");
-    //             done();
-    //         })
-    // });
+
 
     // it("should support update method", (done) => {
 
@@ -71,16 +92,28 @@ describe("dateTimeService ", () => {
     //         })
     // });
 
-    //TODO: event_id
+    it("should support search method",(done)=>{
+        dt.addDateTime(dateTimeArray)
+        .then(()=> dt.searchDateTime(1))
+        .then((data)=>{
+            expect(data.length).toEqual(2)
 
-    // it("should support search method",(done)=>{
-    //     dt.addDateTime(dateString)
-    //     .then(()=> dt.searchDateTime({name:"dateTime1"}))
-    //     .then((data)=>{
-    //         expect(data.length).toEqual(1)
-    //         expect(data[0].name).toEqual("dateTime1");
-    //         done();
-    //     })
-    // });
+            let date0 = new Date(data[0].date);
+
+            expect(date0.toString()).toEqual('Fri Jul 19 2019 00:00:00 GMT+0800 (HKT)');
+            expect(data[0].start_time).toEqual("18:35:00");
+            expect(data[0].iso_string).toEqual("2019-07-19T10:35:00.000Z");
+            expect(data[0].event_id).toEqual(1);
+
+            let date1 = new Date(data[0].date);
+
+            expect(date1.toString()).toEqual('Fri Jul 19 2019 00:00:00 GMT+0800 (HKT)');
+            expect(data[1].start_time).toEqual("11:00:00");
+            expect(data[1].iso_string).toEqual("2018-08-20T03:00:00.000Z");
+            expect(data[1].event_id).toEqual(1);
+
+            done();
+        })
+    });
 
 });

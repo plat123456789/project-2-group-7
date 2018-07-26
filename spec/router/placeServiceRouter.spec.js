@@ -61,12 +61,12 @@ describe('placeServiceRouter ', () => {
         })
     });
 
-    it("should support post method",(done)=>{
-        placeRouter.post(req,res).then(()=>{
-            expect(res.json).toHaveBeenCalledWith([1])
-            done();
-        });
-    });
+    // it("should support post method",(done)=>{
+    //     placeRouter.post(req,res).then(()=>{
+    //         expect(res.json).toHaveBeenCalledWith([1])
+    //         done();
+    //     });
+    // });
 
     // it("should support search method",(done)=>{
     //     placeRouter.search(req,res).then(()=>{

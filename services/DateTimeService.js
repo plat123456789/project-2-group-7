@@ -36,7 +36,7 @@ class DateTimeService {
 
     searchDateTime(event_id) {
         return this.knex(dateTimes)
-            .select('date', 'start_time', "iso_string")
+            .select('date', 'start_time', "iso_string", 'id', 'event_id')
             .where('event_id', event_id);
     }
 
@@ -47,7 +47,7 @@ class DateTimeService {
         return this.knex(dateTimes)
             .update({
                 date: temp.toDateString(),
-                start_time: temp.toTimeString().replace("GMT+0800", ""),
+                start_time: temp.toTimeString().replace(/GMT\+\d\d\d\d/, ""),
                 iso_string: temp.toISOString(),
             })
             .where('id', dateOption_id);
